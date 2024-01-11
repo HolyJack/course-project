@@ -1,113 +1,66 @@
-import Image from 'next/image'
+import Image from "next/image";
+
+const TAGS = ["books", "pens", "marks"];
+const IMG =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAooAAAH0CAYAAAC6tAygAAAAAXNSR0IArs4c6QAAIABJREFUeF7t3QePI8cRBlDKOeckyUnOOf7/f+Cc5CzbshzkIOdsy6gFKMy1mmSRrL3bq34DCBZ8zebUqxX2u56emUe+9KUvPb9zECBAgAABAgQIEBgEHhEU/UwQIECAAAECBAjMBARFPxcECBAgQIAAAQJTAUHRDwYBAgQIECBAgICg6GeAAAECBAgQIEAgL2BFMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K5YAAQIECBAgkBcQFPNWRhIgQIAAAQIElhIQFJdqt2IJECBAgAABAnkBQTFvZSQBAgQIECBAYCkBQXGpdiuWAAECBAgQIJAXEBTzVkYSIECAAAECBJYSEBSXardiCRAgQIAAAQJ5AUExb2UkAQIECBAgQGApAUFxqXYrlgABAgQIECCQFxAU81ZGEiBAgAABAgSWEhAUl2q3YgkQIECAAAECeQFBMW9lJAECBAgQIEBgKQFBcal2K3YFgZe97GW7N7zhDbvXvva1u1e+8pW7l7zkJbv//ve/uz/+8Y+755577ubf79Lx0pe+9OZc45+Xv/zlu//973+7f/zjH7s///nPu3/+85936VQfunN51atedeP66le/+ubnIDzD9k9/+tPu+eefv7ie6NPrXve63Wte85pd9O8///nP7u9///tNz+LfHQQI9BEQFPv0UiWLC8Qv7Pe///27N73pTUcl4hf5D3/4w91f//rXo+Mef/zx3bve9a6LVCOMfPvb3z762Qi0cb5vfOMbD47797//vfvlL3+5+81vfnPRedzVD33+85+/CW6XHN///vdvAtmx461vfevu3e9+9y6MZ0eExJjjJz/5yS6Ms0cEwyeeeGIXAfTQ8be//W339NNP7/7yl79kpzWOAIE7LCAo3uHmODUCWYFYNfroRz+6e+SRR7If2f385z/f/frXvz44/sMf/vDNyuQlR4SPb3zjGwc/+vrXv373kY98JD11rIBFuL1mFSz9Zbc8MAJiBMVLjx/96Ee7P/zhDwc//rGPfexmFTFzhGe4hu+p47HHHts9+uijp4a98Oe/+MUvbkK+gwCBh1tAUHy4++fsCdys7nziE584KyTu2WLVL1b/ZscnP/nJoytHx+iPBcVYlYowc06oje+KFarvfe97D33H45JthPpLj2NB8dJw/+STT+5iJfDQ8Y53vGP3nve85+xTfuaZZ3a/+tWvzv6cDxAgcHcEBMW70wtnQuAigc997nM3+8S2R+zzi1Wn2JMYl5pjZTB+2Y/jjl0ins2bPcEIHRE+Zsds3ljZ2u+de8UrXnGz/y32wY1HXNJ89tlns6dxJ8e9853vvLksfMkRTnHpeXZZ99C80f8YH77xcxD7FceQHmNiBXi2Yhv7XD/1qU+96HTjZyy2L8Tc2/2K48Bjfxm5xMBnCBC4vwKC4v319m0ESgVm4SB+6X/rW9960U0rERJj5TGC2Pb4zne+c3Mjwnh88YtffOH/OnUpOVvU7HwjcERIGW+yiX12sYdxDMBf/epXs193J8dFTVHb/vjxj398E+ivPWYBPFbzYlVvPD7zmc+8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CBAgUCogKJZymowAAQIECBAg0EdAUOzTS5UQIECAAAECBEoFBMVSTpMRIECAAAECBPoICIp9eqkSAgQIECBAgECpgKBYymkyAgQIECBAgEAfAUGxTy9VQoAAAQIECBAoFRAUSzlNRoAAAQIECBDoIyAo9umlSggQIECAAAECpQKCYimnyQgQIECAAAECfQQExT69VAkBAgQIECBAoFRAUCzlNBkBAgQIECBAoI+AoNinlyohQIAAAQIECJQKCIqlnCYjQIAAAQIECPQREBT79FIlBAgQIECAAIFSAUGxlNNkBAgQIECAAIE+AoJin16qhAABAgQIECBQKiAolnKajAABAgQIECDQR0BQ7NNLlRAgQIAAAQIESgUExVJOkxEgQIAAAQIE+ggIin16qRICBAgQIECAQKmAoFjKaTICBAgQIECAQB8BQbFPL1VCgAABAgQIECgVEBRLOU1GgAABAgQIEOgjICj26aVKCBAgQIAAAQKlAoJiKafJCBAgQIAAAQJ9BATFPr1UCQECBAgQIECgVEBQLOU0GQECBAgQIECgj4Cg2KeXKiFAgAABAgQIlAoIiqWcJiNAgAABAgQI9BEQFPv0UiUECBAgQIAAgVIBQbGU02QECBAgQIAAgT4CgmKfXqqEAAECBAgQIFAqICiWcpqMAAECBAgQINBHQFDs00uVECBAgAABAgRKBQTFUk6TESBAgAABAgT6CAiKfXqpEgIECBAgQIBAqYCgWMppMgIECBAgQIBAHwFBsU8vVUKAAAECBAgQKBUQFEs5TUaAAAECBAgQ6CMgKPbppUoIECBAgAABAqUCgmIpp8kIECBAgAABAn0EBMU+vVQJAQIECBAgQKBUQFAs5TQZAQIECBAgQKCPgKDYp5cqIUCAAAECBAiUCgiKpZwmI0CAAAECBAj0ERAU+/RSJQQIECBAgACBUgFBsZTTZAQIECBAgACBPgKCYp9eqoQAAQIECBAgUCogKJZymowAAQIECBAg0EdAUOzTS5UQIECAAAECBEoFBMVSTpMRIECAAAECBPoICIp9eqkSAgQIECBAgECpgKBYymkyAgQIECBAgEAfAUGxTy9VQoAAAQIECBAoFRAUSzlNRoAAAQIECBDoIyAo9umlSggQIECAAAECpQKCYimnyQgQIECAAAECfQQExT69VAkBAgQIECBAoFRAUCzlNBkBAgQIECBAoI+AoNinlyohQIAAAQIECJQKCIqlnCYjQIAAAQIECPQREBT79FIlBAgQIECAAIFSAUGxlNNkBAgQIECAAIE+AoJin16qhAABAgQIECBQKiAolnKajAABAgQIECDQR0BQ7NNLlRAgQIAAAQIESgUExVJOkxEgQIAAAQIE+ggIin16qRICBAgQIECAQKmAoFjKaTICBAgQIECAQB8BQbFPL1VCgAABAgQIECgVEBRLOU1GgAABAgQIEOgjICj26aVKCBAgQIAAAQKlAoJiKafJCBAgQIAAAQJ9BATFPr1UCQECBAgQIECgVEBQLOU0GQECBAgQIECgj4Cg2KeXKiFAgAABAgQIlAoIiqWcJiNAgAABAgQI9BEQFPv0UiUECBAgQIAAgVIBQbGU02QECBAgQIAAgT4CgmKfXqqEAAECBAgQIFAqICiWcpqMAAECBAgQINBHQFDs00uVECBAgAABAgRKBQTFUk6TESBAgAABAgT6CAiKfXqpEgIECBAgQIBAqYCgWMppMgIECBAgQIBAHwFBsU8vVUKAAAECBAgQKBUQFEs5TUaAAAECBAgQ6CMgKPbppUoIECBAgAABAqUCgmIpp8kIECBAgAABAn0EBMU+vVQJAQIECBAgQKBUQFAs5TQZAQIECBAgQKCPgKDYp5cqIUCAAAECBAiUCgiKpZwmI0CAAAECBAj0ERAU+/RSJQQIECBAgACBUgFBsZTTZAQIECBAgACBPgKCYp9eqoQAAQIECBAgUCogKJZymowAAQIECBAg0EdAUOzTS5UQIECAAAECBEoFBMVSTpMRIECAAAECBPoICIp9eqkSAgQIECBAgECpgKBYymkyAgQIECBAgEAfAUGxTy9VQoAAAQIECBAoFRAUSzlNRoAAAQIECBDoIyAo9umlSggQIECAAAECpQKCYimnyQgQIECAAAECfQQExT69VAkBAgQIECBAoFRAUCzlNBkBAgQIECBAoI+AoNinlyohQIAAAQIECJQKCIqlnCYjQIAAAQIECPQREBT79FIlBAgQIECAAIFSAUGxlNNkBAgQIECAAIE+AoJin16qhAABAgQIECBQKiAolnKajAABAgQIECDQR0BQ7NNLlRAgQIAAAQIESgUExVJOkxEgQIAAAQIE+ggIin16qRICBAgQIECAQKmAoFjKaTICBAgQIECAQB8BQbFPL1VCgAABAgQIECgVEBRLOU1GgAABAgQIEOgjICj26aVKCBAgQIAAAQKlAoJiKafJCBAgQIAAAQJ9BATFPr1UCQECBAgQIECgVEBQLOU0GQECBAgQIECgj4Cg2KeXKiFAgAABAgQIlAoIiqWcJiNAgAABAgQI9BEQFPv0UiUECBAgQIAAgVIBQbGU02QECBAgQIAAgT4CgmKfXqqEAAECBAgQIFAqICiWcpqMAAECBAgQINBHQFDs00uVECBAgAABAgRKBQTFUk6TESBAgAABAgT6CAiKfXqpEgIECBAgQIBAqYCgWMppMgIECBAgQIBAHwFBsU8vVUKAAAECBAgQKBUQFEs5TUaAAAECBAgQ6CMgKPbppUoIECBAgAABAqUCgmIpp8kIECBAgAABAn0EBMU+vVQJAQIECBAgQKBUQFAs5TQZAQIECBAgQKCPgKDYp5cqIUCAAAECBAiUCgiKpZwmI0CAAAECBAj0ERAU+/RSJQQIECBAgACBUgFBsZTTZAQIECBAgACBPgKCYp9eqoQAAQIECBAgUCogKJZymowAAQIECBAg0EdAUOzTS5UQIECAAAECBEoFBMVSTpMRIECAAAECBPoICIp9eqkSAgQIECBAgECpgKBYymkyAgQIECBAgEAfgf8D6wsNMh4G+jgAAAAASUVORK5CYII=";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="flex flex-col gap-6 py-6">
+      <section className="flex flex-wrap gap-4">
+        {TAGS.map((tag, i) => (
+          <div
+            key={i}
+            className="cursor-pointer rounded-full bg-secondary px-3 py-1 font-bold
+            text-text shadow shadow-shadow"
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            {tag}
+          </div>
+        ))}
+      </section>
+      <section className="flex w-full flex-col gap-4">
+        <h2 className="text-3xl font-bold text-text">Biggest Collections</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {Array(5)
+            .fill(null)
+            .map((_, i) => (
+              <div
+                key={i}
+                className="w-full overflow-hidden rounded-md object-cover hover:cursor-pointer"
+              >
+                <Image src={IMG} width={650} height={500} alt="ph" />
+              </div>
+            ))}
+          <div
+            className="flex items-center justify-center rounded-md bg-accent
+            text-5xl font-bold text-primary hover:cursor-pointer"
+          >
+            More
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      <section className="flex w-full flex-col gap-4">
+        <h2 className="text-3xl font-bold text-text">Recently Added</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {Array(5)
+            .fill(null)
+            .map((_, i) => (
+              <div
+                key={i}
+                className="w-full overflow-hidden rounded-md object-cover hover:cursor-pointer"
+              >
+                <Image src={IMG} width={650} height={500} alt="ph" />
+              </div>
+            ))}
+          <div
+            className="flex items-center justify-center rounded-md
+            bg-secondary text-5xl font-bold text-primary"
+          >
+            More
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }
