@@ -1,8 +1,8 @@
 import Profile from "@/components/Profile";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
+import { User, getServerSession } from "next-auth";
+import { authOptions } from "@/shared/authOptions";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
@@ -11,7 +11,7 @@ export default async function ProfilePage() {
 
   return (
     <Suspense>
-      <Profile user={session.user} />
+      <Profile user={session.user as User} />
     </Suspense>
   );
 }

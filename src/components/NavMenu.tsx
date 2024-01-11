@@ -12,16 +12,17 @@ export function AuthButton() {
     return (
       <section className="flex gap-4">
         <button
-          className="h-10 w-24 rounded-full shadow shadow-shadow transition
-          duration-300 hover:bg-primary hover:shadow-lg hover:shadow-primary"
+          className="shadow-shadow hover:bg-primary hover:shadow-primary
+          border-shadow h-10 w-24 rounded-full border shadow transition
+          duration-300 hover:shadow-lg"
           onClick={() => signOut()}
         >
           Sign Out
         </button>
         <Link
           href={"/profile"}
-          className="aspect-square w-10 overflow-hidden rounded-full
-          bg-background shadow hover:outline hover:outline-primary"
+          className="bg-background hover:outline-primary border-shadow aspect-square
+          w-10 overflow-hidden rounded-full border shadow hover:outline"
         >
           <Image
             src={session.user?.image || ""}
@@ -36,7 +37,9 @@ export function AuthButton() {
 
   return (
     <button
-      className="h-10 w-24 rounded-full shadow shadow-shadow"
+      className="shadow-shadow hover:bg-primary hover:shadow-primary
+      border-shadow h-10 w-24 rounded-full border shadow transition
+      duration-300 hover:shadow-lg"
       onClick={() => signIn()}
     >
       Sign In
@@ -47,7 +50,9 @@ export function AuthButton() {
 export function NavMenu() {
   return (
     <div className="container mx-auto flex items-center justify-between gap-4">
-      <h1 className="text-3xl font-bold">📦 Collections</h1>
+      <Link href={"/"}>
+        <h1 className="text-3xl font-bold">📦 Collections</h1>
+      </Link>
       <div className="flex gap-4">
         <AuthButton />
         <DarkModeButton />

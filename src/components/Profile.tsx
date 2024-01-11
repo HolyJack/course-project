@@ -30,7 +30,7 @@ export default async function Profile({ user }: { user: User }) {
   return (
     <div>
       <div>{`Hey ${user.name}`}</div>
-      <div>{collections}</div>
+      <div>{collections.length && collections[0].title}</div>
     </div>
   );
 }

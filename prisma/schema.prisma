@@ -40,6 +40,7 @@ model User {
   email         String?      @unique
   emailVerified DateTime?
   image         String?
+  role          Role         @default(AUTHOR)
   accounts      Account[]
   collections   Collection[]
   sessions      Session[]
@@ -64,8 +65,8 @@ model Collection {
   updatedAt    DateTime      @updatedAt
   author       User          @relation(fields: [authorId], references: [id])
   topic        Topic         @relation(fields: [topicId], references: [id])
-  items        Item[]
   customFields CustomField[]
+  items        Item[]
 }
 
 model CustomField {
@@ -98,11 +99,11 @@ model CustomFieldValue {
 model Item {
   id                Int                @id @default(autoincrement())
   name              String
-  collectionId      Int
-  collection        Collection @relation(fields: [collectionId], references: [id])
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
+  collectionId      Int
   customFieldValues CustomFieldValue[]
+  collection        Collection         @relation(fields: [collectionId], references: [id])
   tags              TagsOnItems[]
 }
 
@@ -127,7 +128,7 @@ model TagsOnItems {
 
 model Topic {
   id          Int          @id @default(autoincrement())
-  name        String
+  name        String       @unique
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   collections Collection[]

@@ -22,17 +22,17 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Providers>
           <div
-            className="relative flex h-screen w-screen flex-col bg-background
-            text-text"
+            className="bg-background text-text relative flex h-screen w-screen
+            flex-col"
           >
             <header
-              className="fixed flex h-20 w-full items-center bg-background/60
-              text-text shadow shadow-shadow backdrop-blur-md"
+              className="bg-background/60 text-text shadow-shadow fixed flex h-20
+              w-full items-center shadow backdrop-blur-md"
             >
               <NavMenu />
             </header>
             <main className="flex-1 overflow-y-auto pt-20">
-              <div className="container mx-auto">{children}</div>
+              <div className="container mx-auto h-full w-full">{children}</div>
             </main>
             <footer></footer>
           </div>
