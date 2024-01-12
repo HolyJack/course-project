@@ -2,49 +2,74 @@
 
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import DarkModeButton from "./DarkModeButton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/DropdownMenu";
+import { Button } from "@/components/ui/Button";
+import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 
-export function AuthButton() {
+function Logo() {
+  return (
+    <h1 className="group text-3xl font-bold">
+      📦{" "}
+      <span
+        className="text-text from-primary to-accent bg-gradient-to-r
+            bg-clip-text transition-all duration-500 group-hover:text-transparent"
+      >
+        Collections
+      </span>
+    </h1>
+  );
+}
+
+function AuthButton() {
   const { data: session } = useSession();
 
   if (session) {
     return (
-      <section className="flex gap-4">
-        <button
-          className="shadow-shadow hover:bg-primary hover:shadow-primary
-          border-shadow hover:border-primary bg-background h-10 w-24
-          rounded-full border shadow transition duration-300 hover:shadow-lg"
-          onClick={() => signOut()}
-        >
-          Sign Out
-        </button>
-        <Link
-          href={"/dashboard"}
-          className="bg-background hover:outline-primary border-shadow aspect-square
-          w-10 overflow-hidden rounded-full border shadow hover:outline"
-        >
-          <Image
-            src={session.user?.image || ""}
-            width={40}
-            height={40}
-            alt="avatar"
-          />
-        </Link>
-      </section>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Avatar>
+            <Link href={"/dashboard"}>
+              <AvatarImage src={session.user?.image ?? undefined} />
+              <AvatarFallback className="capitalize">
+                {session.user?.name?.substring(0, 1)}
+              </AvatarFallback>
+            </Link>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>{session.user?.email}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <Link className="h-full w-full" href={"/profile"}>
+                Profile
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link className="h-full w-full" href={"/new-collection"}>
+                New Collection
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => signOut()}>
+            Sign Out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
   }
 
-  return (
-    <button
-      className="shadow-shadow hover:bg-primary hover:shadow-primary
-      border-shadow hover:border-primary bg-background h-10 w-24 rounded-full
-      border shadow transition duration-300 hover:shadow-lg"
-      onClick={() => signIn()}
-    >
-      Sign In
-    </button>
-  );
+  return <Button onClick={() => signIn()}>Sign In</Button>;
 }
 
 export function NavMenu() {
@@ -54,15 +79,7 @@ export function NavMenu() {
         gap-4 sm:flex-row"
     >
       <Link href={"/"}>
-        <h1 className="group text-3xl font-bold">
-          📦{" "}
-          <span
-            className="text-text from-primary to-accent bg-gradient-to-r
-            bg-clip-text transition-all duration-500 group-hover:text-transparent"
-          >
-            Collections
-          </span>
-        </h1>
+        <Logo />
       </Link>
       <div className="flex gap-4">
         <AuthButton />
