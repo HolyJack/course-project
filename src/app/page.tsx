@@ -19,7 +19,7 @@ export default function Home() {
         ))}
       </section>
       <section className="flex w-full flex-col gap-4">
-        <h2 className="text-text text-3xl font-bold">Biggest Collections</h2>
+        <h2 className="text-text text-2xl font-bold">Biggest Collections</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {Array(5)
             .fill(null)
@@ -41,7 +41,7 @@ export default function Home() {
       </section>
 
       <section className="flex w-full flex-col gap-4">
-        <h2 className="text-text text-3xl font-bold">Recently Added</h2>
+        <h2 className="text-text text-2xl font-bold">Recently Added</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {Array(5)
             .fill(null)
