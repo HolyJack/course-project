@@ -21,21 +21,20 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div
-            className="bg-background text-text relative flex h-screen w-screen
-            flex-col"
+          <header
+            className="bg-background/60 text-text shadow-shadow sticky top-0 z-[1000]
+              flex h-20 w-full items-center px-4 py-5 shadow backdrop-blur-md"
           >
-            <header
-              className="bg-background/60 text-text shadow-shadow fixed flex h-20
-              w-full items-center shadow backdrop-blur-md"
-            >
-              <NavMenu />
-            </header>
-            <main className="flex-1 overflow-y-auto pt-20">
-              <div className="container mx-auto h-full w-full">{children}</div>
-            </main>
-            <footer></footer>
-          </div>
+            <NavMenu />
+          </header>
+          <main>
+            <div className="bg-background relative px-4">
+              <div className="container mx-auto flex h-full min-h-[calc(100vh-5rem)] py-5">
+                {children}
+              </div>
+            </div>
+          </main>
+          <footer></footer>
         </Providers>
       </body>
     </html>

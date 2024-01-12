@@ -26,7 +26,7 @@ const AdminDashboard = forwardRef<AgGridReact, AdminDashboardProps>(
       };
     }, []);
     return (
-      <section className="h-full w-full">
+      <section className="flex-1">
         <div className="ag-theme-quartz h-full w-full">
           <AgGridReact
             ref={ref}

@@ -21,10 +21,5 @@
   }
 }
 
-.ag-theme-quartz {
-    --ag-active-color: var(--accent);
-    --ag-foeground-color: var(--text);
-    --ag-background-color: var(--background)
-}
 
 

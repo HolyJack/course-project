@@ -13,14 +13,14 @@ export function AuthButton() {
       <section className="flex gap-4">
         <button
           className="shadow-shadow hover:bg-primary hover:shadow-primary
-          border-shadow h-10 w-24 rounded-full border shadow transition
-          duration-300 hover:shadow-lg"
+          border-shadow hover:border-primary bg-background h-10 w-24
+          rounded-full border shadow transition duration-300 hover:shadow-lg"
           onClick={() => signOut()}
         >
           Sign Out
         </button>
         <Link
-          href={"/profile"}
+          href={"/dashboard"}
           className="bg-background hover:outline-primary border-shadow aspect-square
           w-10 overflow-hidden rounded-full border shadow hover:outline"
         >
@@ -38,8 +38,8 @@ export function AuthButton() {
   return (
     <button
       className="shadow-shadow hover:bg-primary hover:shadow-primary
-      border-shadow h-10 w-24 rounded-full border shadow transition
-      duration-300 hover:shadow-lg"
+      border-shadow hover:border-primary bg-background h-10 w-24 rounded-full
+      border shadow transition duration-300 hover:shadow-lg"
       onClick={() => signIn()}
     >
       Sign In
@@ -49,9 +49,20 @@ export function AuthButton() {
 
 export function NavMenu() {
   return (
-    <div className="container mx-auto flex items-center justify-between gap-4">
+    <div
+      className="container mx-auto flex flex-col items-center justify-between
+        gap-4 sm:flex-row"
+    >
       <Link href={"/"}>
-        <h1 className="text-3xl font-bold">📦 Collections</h1>
+        <h1 className="group text-3xl font-bold">
+          📦{" "}
+          <span
+            className="text-text from-primary to-accent bg-gradient-to-r
+            bg-clip-text transition-all duration-500 group-hover:text-transparent"
+          >
+            Collections
+          </span>
+        </h1>
       </Link>
       <div className="flex gap-4">
         <AuthButton />

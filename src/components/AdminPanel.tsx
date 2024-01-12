@@ -26,9 +26,5 @@ export default function AdminPanel() {
     },
   };
 
-  return (
-    <div className="h-full py-5">
-      <AdminDashboard ref={ref} datasource={datasource} />
-    </div>
-  );
+  return <AdminDashboard ref={ref} datasource={datasource} />;
 }

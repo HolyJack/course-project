@@ -11,15 +11,15 @@ export default function Home() {
         {TAGS.map((tag, i) => (
           <div
             key={i}
-            className="cursor-pointer rounded-full bg-secondary px-3 py-1 font-bold
-            text-text shadow shadow-shadow"
+            className="bg-secondary text-text shadow-shadow cursor-pointer rounded-full px-3
+            py-1 font-bold shadow"
           >
             {tag}
           </div>
         ))}
       </section>
       <section className="flex w-full flex-col gap-4">
-        <h2 className="text-3xl font-bold text-text">Biggest Collections</h2>
+        <h2 className="text-text text-3xl font-bold">Biggest Collections</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {Array(5)
             .fill(null)
@@ -32,8 +32,8 @@ export default function Home() {
               </div>
             ))}
           <div
-            className="flex items-center justify-center rounded-md bg-accent
-            text-5xl font-bold text-primary hover:cursor-pointer"
+            className="bg-accent text-primary flex items-center justify-center
+            rounded-md text-5xl font-bold hover:cursor-pointer"
           >
             More
           </div>
@@ -41,7 +41,7 @@ export default function Home() {
       </section>
 
       <section className="flex w-full flex-col gap-4">
-        <h2 className="text-3xl font-bold text-text">Recently Added</h2>
+        <h2 className="text-text text-3xl font-bold">Recently Added</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {Array(5)
             .fill(null)
@@ -54,8 +54,8 @@ export default function Home() {
               </div>
             ))}
           <div
-            className="flex items-center justify-center rounded-md
-            bg-secondary text-5xl font-bold text-primary"
+            className="bg-secondary text-primary flex items-center
+            justify-center rounded-md text-5xl font-bold"
           >
             More
           </div>
