@@ -73,7 +73,7 @@ model CustomField {
   type         CustomFieldTypes
   state        Boolean            @default(true)
   value        String
-  collectionId Int
+  collectionId Int  
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt
   collection   Collection         @relation(fields: [collectionId], references: [id])

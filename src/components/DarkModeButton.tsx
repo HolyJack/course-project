@@ -20,7 +20,6 @@ function IconContainer({ ...props }) {
 export default function DarkModeButton() {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
-
   return (
     <Button
       variant={"ghost"}

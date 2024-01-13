@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
+import type { PutBlobResult } from "@vercel/blob";
 import { Button } from "@/components/ui/Button";
 import {
   Form,
@@ -24,28 +25,38 @@ import {
 import { CustomFieldTypes } from "@prisma/client";
 import { Textarea } from "./ui/TextArea";
 import { Label } from "./ui/Label";
+import { submitCollection } from "@/app/new-collection/page";
 
-const MAX_FILE_SIZE = 50000000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+const MAX_FILE_SIZE = 45000000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
-const formSchema = z.object({
+export const dataSchema = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters.",
   }),
   description: z.string().optional(),
   topic: z.string(),
-  image: z.any().optional(),
   customFields: z
     .array(
       z.object({ type: z.nativeEnum(CustomFieldTypes), value: z.string() }),
     )
     .optional(),
 });
+
+const imageFileSchema = z.object({
+  image: z
+    .custom<File>((v) => v instanceof File, {
+      message: "Image is required",
+    })
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
+      `Only .jpeg, .jpg and .png are supported`,
+    )
+    .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 4.5MB.`)
+    .optional(),
+});
+
+const formSchema = dataSchema.merge(imageFileSchema);
 
 export default function CreateNewCollection({ topics }: { topics: string[] }) {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,7 +65,7 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
       title: "",
       description: "",
       customFields: [],
-      image: "",
+      image: undefined,
       topic: topics[0],
     },
   });
@@ -64,12 +75,20 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
     control: form.control,
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("wow2");
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    const response = await fetch(
+      `/api/collection-img/upload?filename=${values.image?.name}`,
+      {
+        method: "POST",
+        body: values.image,
+      },
+    );
+    const blob = (await response.json()) as PutBlobResult;
+    console.log(blob);
+    if (!blob || !blob.url) console.log("something went wrong");
+
+    submitCollection({ ...values, image: blob.url });
   }
 
   return (
@@ -200,7 +219,6 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
             variant="secondary"
             onClick={() => {
               append({ value: "", type: "INT" });
-              console.log("wow");
             }}
           >
             Add Custom Field
@@ -209,11 +227,20 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => (
+          render={({ field: { onChange, onBlur, ref, name } }) => (
             <FormItem>
-              <FormLabel className="capitalize">{field.name}</FormLabel>
+              <FormLabel className="capitalize">{name}</FormLabel>
               <FormControl>
-                <Input {...field} type="file" accept="image/*" />
+                <Input
+                  ref={ref}
+                  name={name}
+                  type="file"
+                  accept="image/*"
+                  onBlur={onBlur}
+                  onChange={(e) => {
+                    onChange(e.target.files?.[0]);
+                  }}
+                />
               </FormControl>
               <FormDescription>
                 This image will represent your Collection
