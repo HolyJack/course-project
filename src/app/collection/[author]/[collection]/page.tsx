@@ -5,6 +5,7 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
+
 export default async function CollectionPage({
   params,
 }: {
@@ -14,7 +15,7 @@ export default async function CollectionPage({
     where: { author: { name: params.author }, title: params.collection },
     include: { items: true, author: { select: { email: true } } },
   });
-
+  console.log(params.author, params.collection);
   if (!collection) return redirect("/");
 
   const session = await getServerSession(authOptions);
