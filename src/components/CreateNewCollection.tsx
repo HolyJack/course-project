@@ -25,7 +25,7 @@ import {
 import { CustomFieldTypes } from "@prisma/client";
 import { Textarea } from "./ui/TextArea";
 import { Label } from "./ui/Label";
-import { submitCollection } from "@/app/new-collection/page";
+import { submitCollection } from "@/shared/serverActions/createCollection";
 
 const MAX_FILE_SIZE = 45000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
@@ -87,7 +87,6 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
     const blob = (await response.json()) as PutBlobResult;
     console.log(blob);
     if (!blob || !blob.url) console.log("something went wrong");
-
     submitCollection({ ...values, image: blob.url });
   }
 
