@@ -1,3 +1,5 @@
+import BiggestCollections from "@/components/BiggestCollections";
+import RecentCollections from "@/components/RecentCollections";
 import Image from "next/image";
 
 const TAGS = ["books", "pens", "marks"];
@@ -18,49 +20,8 @@ export default function Home() {
           </div>
         ))}
       </section>
-      <section className="flex w-full flex-col gap-4">
-        <h2 className="text-text text-2xl font-bold">Biggest Collections</h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {Array(5)
-            .fill(null)
-            .map((_, i) => (
-              <div
-                key={i}
-                className="w-full overflow-hidden rounded-md object-cover hover:cursor-pointer"
-              >
-                <Image src={IMG} width={650} height={500} alt="ph" />
-              </div>
-            ))}
-          <div
-            className="bg-accent text-primary flex items-center justify-center
-            rounded-md text-5xl font-bold hover:cursor-pointer"
-          >
-            More
-          </div>
-        </div>
-      </section>
-
-      <section className="flex w-full flex-col gap-4">
-        <h2 className="text-text text-2xl font-bold">Recently Added</h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {Array(5)
-            .fill(null)
-            .map((_, i) => (
-              <div
-                key={i}
-                className="w-full overflow-hidden rounded-md object-cover hover:cursor-pointer"
-              >
-                <Image src={IMG} width={650} height={500} alt="ph" />
-              </div>
-            ))}
-          <div
-            className="bg-secondary text-primary flex items-center
-            justify-center rounded-md text-5xl font-bold"
-          >
-            More
-          </div>
-        </div>
-      </section>
+      <BiggestCollections />
+      <RecentCollections />
     </div>
   );
 }

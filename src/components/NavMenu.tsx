@@ -37,12 +37,10 @@ function AuthButton() {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
-            <Link href={"/dashboard"}>
-              <AvatarImage src={session.user?.image ?? undefined} />
-              <AvatarFallback className="capitalize">
-                {session.user?.name?.substring(0, 1)}
-              </AvatarFallback>
-            </Link>
+            <AvatarImage src={session.user?.image ?? undefined} />
+            <AvatarFallback className="capitalize">
+              {session.user?.name?.substring(0, 1)}
+            </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>

@@ -1,3 +1,5 @@
+"use server";
+
 import { CustomFieldTypes } from "@prisma/client";
 import { z } from "zod";
 import prisma from "../db/db";

@@ -34,8 +34,9 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.49.3",
+    "slugify": "^1.6.6",
     "tailwind-merge": "^2.2.0",
-    "vercel": "^33.1.0",
+    "vercel": "^32.3.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
