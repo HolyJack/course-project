@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
 export default async function CollectionPage({
   params,
 }: {
@@ -24,7 +25,7 @@ export default async function CollectionPage({
         {collection.title}
       </h1>
       <Image
-        className="border-shadow shadow-shadow h-auto w-full overflow-hidden rounded-md border shadow"
+        className="h-auto w-full overflow-hidden rounded-md border border-shadow shadow shadow-shadow"
         src={collection.imgageUrl ?? ""}
         width={1000}
         height={1000}
