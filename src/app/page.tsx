@@ -3,6 +3,8 @@ import RecentCollections from "@/components/RecentCollections";
 
 const TAGS = ["books", "pens", "marks"];
 
+export const revalidate = 0;
+
 export default function Home() {
   return (
     <div className="space-y-6 py-6">
