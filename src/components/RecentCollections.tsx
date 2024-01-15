@@ -8,10 +8,12 @@ export default async function RecentCollections() {
     take: AMOUNT,
     orderBy: { createdAt: "desc" },
     include: {
-      author: { select: { name: true } },
+      author: { select: { name: true, slug: true } },
       topic: { select: { name: true } },
     },
   });
+
+  if (!collections.length) return null;
 
   return (
     <section className="space-y-8">
@@ -20,7 +22,8 @@ export default async function RecentCollections() {
         {collections.map(
           ({
             title,
-            author: { name: author },
+            slug: collectionSlug,
+            author: { name: author, slug: authorSlug },
             imgageUrl,
             id,
             topic: { name: topic },
@@ -28,7 +31,9 @@ export default async function RecentCollections() {
             <CollectionCard
               key={id}
               title={title}
+              collectionSlug={collectionSlug ?? ""}
               author={author ?? ""}
+              authorSlug={authorSlug ?? ""}
               topic={topic}
               imageUrl={imgageUrl ?? ""}
             />

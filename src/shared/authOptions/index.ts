@@ -3,6 +3,7 @@ import { AuthOptions } from "next-auth";
 import prisma from "@/shared/db/db";
 import Github from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import slugify from "slugify";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -12,6 +13,11 @@ export const authOptions: AuthOptions = {
       profile(profile) {
         return {
           id: profile.id.toString(),
+          slug: slugify(
+            profile.name ??
+              profile.login ??
+              (profile.email as string).split("@")[0],
+          ),
           name: profile.name || profile.login,
           email: profile.email,
           image: profile.avatar_url,
@@ -21,6 +27,16 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID ?? "",
       clientSecret: process.env.GOOGLE_SECRET ?? "",
+      profile(profile) {
+        return {
+          ...profile,
+          slug: slugify(
+            profile.name ??
+              profile.login ??
+              (profile.email as string).split("@")[0],
+          ),
+        };
+      },
     }),
   ],
   adapter: PrismaAdapter(prisma),

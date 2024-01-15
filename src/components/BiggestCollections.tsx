@@ -8,7 +8,7 @@ export default async function BiggestCollections() {
     take: AMOUNT,
     orderBy: { items: { _count: "desc" } },
     include: {
-      author: { select: { name: true } },
+      author: { select: { name: true, slug: true } },
       topic: { select: { name: true } },
     },
   });
@@ -20,7 +20,8 @@ export default async function BiggestCollections() {
         {collections.map(
           ({
             title,
-            author: { name: author },
+            slug: collectionSlug,
+            author: { name: author, slug: authorSlug },
             imgageUrl,
             id,
             topic: { name: topic },
@@ -28,7 +29,9 @@ export default async function BiggestCollections() {
             <CollectionCard
               key={id}
               title={title}
+              collectionSlug={collectionSlug ?? ""}
               author={author ?? ""}
+              authorSlug={authorSlug ?? ""}
               topic={topic}
               imageUrl={imgageUrl ?? ""}
             />

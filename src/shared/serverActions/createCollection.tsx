@@ -5,6 +5,7 @@ import { z } from "zod";
 import prisma from "../db/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../authOptions";
+import slugify from "slugify";
 
 const dataSchema = z.object({
   title: z.string().min(2, {
@@ -46,6 +47,7 @@ export async function submitCollection(
 
   const collection = {
     title: values.title,
+    slug: slugify(values.title),
     description: values.description ?? "",
     topicId,
     authorId,

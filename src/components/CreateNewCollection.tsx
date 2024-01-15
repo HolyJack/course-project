@@ -27,7 +27,6 @@ import { CustomFieldTypes } from "@prisma/client";
 import { Textarea } from "./ui/TextArea";
 import { Label } from "./ui/Label";
 import { submitCollection } from "@/shared/serverActions/createCollection";
-import { LoaderIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -153,7 +152,7 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
             <FormItem>
               <FormLabel className="capitalize">{field.name}</FormLabel>
               <FormControl>
-                <Select>
+                <Select {...field}>
                   <SelectTrigger className="capitalize">
                     <SelectValue placeholder={field.name} />
                   </SelectTrigger>
@@ -182,7 +181,7 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Select>
+                        <Select {...field}>
                           <SelectTrigger>
                             <SelectValue
                               defaultValue={field.value}

@@ -1,6 +1,4 @@
-import { authOptions } from "@/shared/authOptions";
 import prisma from "@/shared/db/db";
-import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -12,13 +10,10 @@ export default async function CollectionPage({
   params: { author: string; collection: string };
 }) {
   const collection = await prisma.collection.findFirst({
-    where: { author: { name: params.author }, title: params.collection },
+    where: { author: { slug: params.author }, slug: params.collection },
     include: { items: true, author: { select: { email: true } } },
   });
-  console.log(params.author, params.collection);
   if (!collection) return redirect("/");
-
-  const session = await getServerSession(authOptions);
 
   return (
     <article className="mx-auto grid h-fit w-[768px] max-w-full grid-cols-1 gap-5">

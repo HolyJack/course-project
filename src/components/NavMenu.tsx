@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import DarkModeButton from "./DarkModeButton";
+const DarkModeButton = dynamic(() => import("@/components/DarkModeButton"));
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import {
   DropdownMenu,
@@ -14,14 +14,15 @@ import {
 } from "@/components/ui/DropdownMenu";
 import { Button } from "@/components/ui/Button";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
+import dynamic from "next/dynamic";
 
 function Logo() {
   return (
     <h1 className="group text-3xl font-bold">
       📦{" "}
       <span
-        className="text-text from-primary to-accent bg-gradient-to-r
-            bg-clip-text transition-all duration-500 group-hover:text-transparent"
+        className="bg-gradient-to-r from-primary to-accent bg-clip-text
+            text-text transition-all duration-500 group-hover:text-transparent"
       >
         Collections
       </span>

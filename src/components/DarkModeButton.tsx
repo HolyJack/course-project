@@ -1,3 +1,5 @@
+"use client";
+
 import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/Button";
@@ -23,7 +25,7 @@ export default function DarkModeButton() {
   return (
     <Button
       variant={"ghost"}
-      className="bg-background hover:bg-text group relative h-10 w-10 rounded-full transition duration-300"
+      className="group relative h-10 w-10 rounded-full bg-background transition duration-300 hover:bg-text"
       onClick={() =>
         currentTheme === "dark" ? setTheme("light") : setTheme("dark")
       }

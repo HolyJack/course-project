@@ -36,6 +36,7 @@ model Session {
 model User {
   id            String       @id @default(cuid())
   name          String?
+  slug          String?
   email         String?      @unique
   emailVerified DateTime?
   image         String?
@@ -56,14 +57,15 @@ model VerificationToken {
 model Collection {
   id           Int           @id @default(autoincrement())
   title        String
+  slug         String?
   description  String
   topicId      Int
   imgageUrl    String?
   authorId     String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  author       User          @relation(fields: [authorId], references: [id])
-  topic        Topic         @relation(fields: [topicId], references: [id])
+  author       User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  topic        Topic        @relation(fields: [topicId], references: [id], onDelete: Cascade)
   customFields CustomField[]
   items        Item[]
 }
@@ -76,7 +78,7 @@ model CustomField {
   collectionId Int  
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt
-  collection   Collection         @relation(fields: [collectionId], references: [id])
+  collection   Collection         @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   values       CustomFieldValue[]
 }
 
@@ -91,18 +93,19 @@ model CustomFieldValue {
   textValue     String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  customField   CustomField @relation(fields: [customFieldId], references: [id])
+  customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
   item          Item        @relation(fields: [itemId], references: [id])
 }
 
 model Item {
   id                Int                @id @default(autoincrement())
   name              String
+  slug              String?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   collectionId      Int
   customFieldValues CustomFieldValue[]
-  collection        Collection         @relation(fields: [collectionId], references: [id])
+  collection        Collection         @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   tags              TagsOnItems[]
 }
 
