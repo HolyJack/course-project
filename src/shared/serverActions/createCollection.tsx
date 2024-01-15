@@ -40,7 +40,7 @@ export async function submitCollection(
 
   if (!authorId || !topicId) {
     console.log("something went wrong");
-    return;
+    return false;
   }
   console.log("authorId and topicId availabe");
 
@@ -60,6 +60,5 @@ export async function submitCollection(
       : undefined,
   };
   const result = await prisma.collection.create({ data: { ...collection } });
-  console.log(result);
-  console.log("success");
+  return { createdAt: result.createdAt };
 }

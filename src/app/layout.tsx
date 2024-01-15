@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { NavMenu } from "@/components/NavMenu";
 import Providers from "@/shared/providers/Providers";
+import { Toaster } from "@/components/ui/Sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default async function RootLayout({
             </div>
           </main>
           <footer></footer>
+          <Toaster />
         </Providers>
       </body>
     </html>

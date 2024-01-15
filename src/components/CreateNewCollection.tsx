@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import type { PutBlobResult } from "@vercel/blob";
 import { Button } from "@/components/ui/Button";
+import { ThreeDots } from "react-loader-spinner";
 import {
   Form,
   FormControl,
@@ -26,6 +27,9 @@ import { CustomFieldTypes } from "@prisma/client";
 import { Textarea } from "./ui/TextArea";
 import { Label } from "./ui/Label";
 import { submitCollection } from "@/shared/serverActions/createCollection";
+import { LoaderIcon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const MAX_FILE_SIZE = 45000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
@@ -59,6 +63,7 @@ const imageFileSchema = z.object({
 const formSchema = dataSchema.merge(imageFileSchema);
 
 export default function CreateNewCollection({ topics }: { topics: string[] }) {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -76,7 +81,7 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    setIsLoading(true);
     const response = await fetch(
       `/api/collection-img/upload?filename=${values.image?.name}`,
       {
@@ -85,9 +90,20 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
       },
     );
     const blob = (await response.json()) as PutBlobResult;
-    console.log(blob);
-    if (!blob || !blob.url) console.log("something went wrong");
-    submitCollection({ ...values, image: blob.url });
+    if (!blob || !blob.url) {
+      toast("Unable to create a blob");
+      setIsLoading(false);
+      return;
+    }
+    const res = await submitCollection({ ...values, image: blob.url });
+    if (!res) {
+      toast("Unable to create a collection");
+    } else {
+      toast("Collection has been created", {
+        description: (res.createdAt as Date).toLocaleString(),
+      });
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -248,8 +264,13 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
             </FormItem>
           )}
         />
-        <Button variant="default" className="w-full" type="submit">
-          Submit
+        <Button
+          variant="default"
+          className={"w-full " + (isLoading ? "bg-shadow" : "")}
+          type="submit"
+          disabled={isLoading}
+        >
+          {isLoading ? <ThreeDots width={36} color="white" /> : "Submit"}
         </Button>
       </form>
     </Form>

@@ -36,12 +36,12 @@ export default function CollectionCard({
           </div>
         </div>
       </div>
-      <h3 className="text-xl transition duration-300">
-        <span className="group-hover:text-primary font-bold capitalize transition duration-300">
+      <div className="flex space-x-1.5 text-xl transition duration-300">
+        <h3 className="group-hover:text-primary max-w-[50%] truncate font-bold capitalize transition duration-300">
           {title}
-        </span>{" "}
-        by {author}
-      </h3>
+        </h3>
+        <p>by {author}</p>
+      </div>
     </Link>
   );
 }
