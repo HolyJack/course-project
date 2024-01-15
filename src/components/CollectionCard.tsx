@@ -14,9 +14,12 @@ export default function CollectionCard({
 }) {
   return (
     <Link href={`/collection/${author}/${title}`} className="group space-y-3 ">
-      <div className="border-shadow relative overflow-hidden rounded-xl border">
+      <div
+        className="border-shadow relative aspect-[16/12] overflow-hidden
+        rounded-xl border object-cover"
+      >
         <Image
-          className="w-full content-evenly transition duration-300"
+          className="h-full transition duration-300"
           src={imageUrl ?? ""}
           width={650}
           height={500}
@@ -24,7 +27,7 @@ export default function CollectionCard({
         />
         <div
           className="absolute left-0 top-0 flex h-full w-full items-end
-                bg-gradient-to-b from-transparent to-black/50 opacity-0
+                bg-gradient-to-b from-transparent to-black/75 opacity-0
                 transition duration-300 group-hover:opacity-100"
         >
           <div className="p-5 text-white">
