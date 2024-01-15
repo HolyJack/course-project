@@ -27,16 +27,6 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID ?? "",
       clientSecret: process.env.GOOGLE_SECRET ?? "",
-      profile(profile) {
-        return {
-          ...profile,
-          slug: slugify(
-            profile.name ??
-              profile.login ??
-              (profile.email as string).split("@")[0],
-          ),
-        };
-      },
     }),
   ],
   adapter: PrismaAdapter(prisma),
