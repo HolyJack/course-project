@@ -75,7 +75,7 @@ export default async function addItemAction(
     tag: { connect: { name: value, slug: slugify(value) } },
   }));
 
-  await prisma.tag.createMany({ data: tags });
+  await prisma.tag.createMany({ data: tags, skipDuplicates: true });
   //this requires additional validation logic
   const date = await prisma.item.create({
     data: {

@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -44,6 +45,8 @@ model User {
   accounts      Account[]
   collections   Collection[]
   sessions      Session[]
+  comments      Comment[]
+  likes         Like[]
 }
 
 model VerificationToken {
@@ -107,6 +110,8 @@ model Item {
   customFieldValues CustomFieldValue[]
   collection        Collection         @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   tags              TagsOnItems[]
+  comments          Comment[]
+  likes             Like[]
 }
 
 model Tag {
@@ -136,6 +141,27 @@ model Topic {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   collections Collection[]
+}
+
+model Like {
+  userId String
+  itemId Int
+  user User @relation(fields: [userId], references: [id])
+  item Item @relation(fields: [itemId], references: [id])
+  like Boolean @default(false)
+
+  @@id([userId, itemId])
+}
+
+model Comment {
+    id      String @id @default(cuid())
+    authorId String
+    text    String
+    itemId  Int
+    author  User @relation(fields: [authorId], references: [id])
+    item    Item @relation(fields: [itemId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 enum Role {

@@ -9,6 +9,7 @@ import {
 
 import { authOptions } from "@/shared/authOptions";
 import prisma from "@/shared/db/db";
+import { Cross, Link2 } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -53,12 +54,17 @@ export default async function CollectionPage({
       </section>
 
       <section>
-        <div className="flex justify-between">
-          <h2 className="text-2xl font-bold capitalize">Items</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-2xl font-bold capitalize ">Items</h2>
           {editAccess && (
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="default">Add Item</Button>
+                <button>
+                  <Cross
+                    size={25}
+                    className="cursor-pointer hover:text-primary"
+                  />
+                </button>
               </DialogTrigger>
               <DialogContent>
                 <DialogTitle>Add Item</DialogTitle>
@@ -71,11 +77,12 @@ export default async function CollectionPage({
           )}
         </div>
         {collection.items.length > 0 && (
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="flex flex-col space-y-4 py-4">
             {collection.items.map(({ slug, name, id }) => (
               <Link
                 key={id}
                 href={`/collection/${params.author}/${params.collection}/${slug}`}
+                className="text-bold hover:text-primary"
               >
                 {name}
               </Link>
