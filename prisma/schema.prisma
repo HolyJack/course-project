@@ -36,7 +36,7 @@ model Session {
 model User {
   id            String       @id @default(cuid())
   name          String?
-  slug          String?
+  slug          String       @unique
   email         String?      @unique
   emailVerified DateTime?
   image         String?
@@ -57,7 +57,7 @@ model VerificationToken {
 model Collection {
   id           Int           @id @default(autoincrement())
   title        String
-  slug         String?
+  slug         String       @unique
   description  String
   topicId      Int
   imgageUrl    String?
@@ -100,7 +100,7 @@ model CustomFieldValue {
 model Item {
   id                Int                @id @default(autoincrement())
   name              String
-  slug              String?
+  slug              String            @unique
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   collectionId      Int
@@ -111,7 +111,8 @@ model Item {
 
 model Tag {
   id        Int           @id @default(autoincrement())
-  name      String
+  name      String        @unique
+  slug      String        @unique 
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   items     TagsOnItems[]
@@ -131,6 +132,7 @@ model TagsOnItems {
 model Topic {
   id          Int          @id @default(autoincrement())
   name        String       @unique
+  slug        String       @unique       
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   collections Collection[]

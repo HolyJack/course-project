@@ -118,7 +118,11 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
             <FormItem>
               <FormLabel className="capitalize">{field.name}</FormLabel>
               <FormControl>
-                <Input placeholder="My Favorite books" {...field} />
+                <Input
+                  placeholder="My Favorite books"
+                  {...field}
+                  disabled={isLoading}
+                />
               </FormControl>
               <FormDescription>This is your Collection Tittle</FormDescription>
               <FormMessage />
@@ -136,6 +140,7 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
                 <Textarea
                   placeholder="My Favorite books is so Amazing..."
                   {...field}
+                  disabled={isLoading}
                 />
               </FormControl>
               <FormDescription>
@@ -151,20 +156,21 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="capitalize">{field.name}</FormLabel>
-              <FormControl>
-                <Select {...field}>
+
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
                   <SelectTrigger className="capitalize">
                     <SelectValue placeholder={field.name} />
                   </SelectTrigger>
-                  <SelectContent className="capitalize">
-                    {topics.map((topic, id) => (
-                      <SelectItem value={topic} key={id} className="capitalize">
-                        {topic}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+                </FormControl>
+                <SelectContent className="capitalize">
+                  {topics.map((topic, id) => (
+                    <SelectItem value={topic} key={id} className="capitalize">
+                      {topic}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormDescription>This is your Collection topic.</FormDescription>
               <FormMessage />
             </FormItem>
@@ -180,27 +186,28 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
                   name={`customFields.${index}.type`}
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl>
-                        <Select {...field}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        disabled={isLoading}
+                      >
+                        <FormControl>
                           <SelectTrigger>
-                            <SelectValue
-                              defaultValue={field.value}
-                              placeholder={field.value}
-                            />
+                            <SelectValue />
                           </SelectTrigger>
-                          <SelectContent>
-                            {Object.keys(CustomFieldTypes).map((type, id) => (
-                              <SelectItem
-                                value={type}
-                                key={id}
-                                className="capitalize"
-                              >
-                                {type}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
+                        </FormControl>
+                        <SelectContent>
+                          {Object.keys(CustomFieldTypes).map((type, id) => (
+                            <SelectItem
+                              value={type}
+                              key={id}
+                              className="capitalize"
+                            >
+                              {type}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </FormItem>
                   )}
                 />
@@ -210,9 +217,8 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} disabled={isLoading} />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -254,6 +260,7 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
                   onChange={(e) => {
                     onChange(e.target.files?.[0]);
                   }}
+                  disabled={isLoading}
                 />
               </FormControl>
               <FormDescription>
@@ -265,7 +272,7 @@ export default function CreateNewCollection({ topics }: { topics: string[] }) {
         />
         <Button
           variant="default"
-          className={"w-full " + (isLoading ? "bg-shadow" : "")}
+          className="w-full"
           type="submit"
           disabled={isLoading}
         >

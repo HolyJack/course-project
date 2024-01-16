@@ -7,8 +7,8 @@ export default async function CollectionItemPage({
 }) {
   const item = await prisma.item.findFirst({
     where: {
-      name: params.item,
-      collection: { title: params.collection, author: { name: params.author } },
+      slug: params.item,
+      collection: { slug: params.collection, author: { slug: params.author } },
     },
     include: { customFieldValues: { include: { customField: true } } },
   });

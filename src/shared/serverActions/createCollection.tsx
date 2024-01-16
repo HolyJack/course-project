@@ -24,7 +24,6 @@ const collectionSchema = dataSchema.merge(z.object({ image: z.string() }));
 export async function submitCollection(
   values: z.infer<typeof collectionSchema>,
 ) {
-  console.log("submiting...");
   collectionSchema.parse(values);
   const topicId = (
     await prisma.topic.findFirst({
@@ -40,10 +39,8 @@ export async function submitCollection(
   )?.id;
 
   if (!authorId || !topicId) {
-    console.log("something went wrong");
     return false;
   }
-  console.log("authorId and topicId availabe");
 
   const collection = {
     title: values.title,

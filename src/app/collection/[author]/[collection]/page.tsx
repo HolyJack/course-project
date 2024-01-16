@@ -1,5 +1,17 @@
+import AddItem from "@/components/AddItem";
+import { Button } from "@/components/ui/Button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+} from "@/components/ui/Dialog";
+
+import { authOptions } from "@/shared/authOptions";
 import prisma from "@/shared/db/db";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -11,9 +23,17 @@ export default async function CollectionPage({
 }) {
   const collection = await prisma.collection.findFirst({
     where: { author: { slug: params.author }, slug: params.collection },
-    include: { items: true, author: { select: { email: true } } },
+    include: {
+      items: true,
+      author: { select: { name: true, email: true } },
+      customFields: true,
+    },
   });
   if (!collection) return redirect("/");
+  const user = (await getServerSession(authOptions))?.user;
+  let editAccess = false;
+
+  if (user && user.email === collection.author.email) editAccess = true;
 
   return (
     <article className="mx-auto grid h-fit w-[768px] max-w-full grid-cols-1 gap-5">
@@ -28,18 +48,37 @@ export default async function CollectionPage({
         alt={collection.title}
       />
       <section>
-        <h2 className="text-center text-2xl font-bold capitalize">
-          Description
-        </h2>
+        <h2 className="text-2xl font-bold capitalize">Description</h2>
         <p>{collection.description}</p>
       </section>
 
       <section>
-        <h2 className="text-center text-2xl font-bold capitalize">Items</h2>
+        <div className="flex justify-between">
+          <h2 className="text-2xl font-bold capitalize">Items</h2>
+          {editAccess && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="default">Add Item</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogTitle>Add Item</DialogTitle>
+                <AddItem
+                  customFields={collection.customFields}
+                  collectionSlug={params.collection}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
+        </div>
         {collection.items.length > 0 && (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {collection.items.map(({ name, id }) => (
-              <p key={id}>{name}</p>
+            {collection.items.map(({ slug, name, id }) => (
+              <Link
+                key={id}
+                href={`/collection/${params.author}/${params.collection}/${slug}`}
+              >
+                {name}
+              </Link>
             ))}
           </div>
         )}
