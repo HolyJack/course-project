@@ -7,7 +7,7 @@ export default async function Tags() {
     orderBy: { items: { _count: "desc" } },
   });
   return (
-    <section className="flex flex-wrap gap-4">
+    <section className="flex flex-wrap gap-4 text-base">
       {tags.map((tag) => (
         <Badge key={tag.id}>
           <Link className="w-full" href={`/collection/search?tag=${tag.slug}`}>

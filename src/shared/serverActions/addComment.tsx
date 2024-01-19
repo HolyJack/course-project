@@ -22,7 +22,8 @@ export default async function addComment({
   const itemId = (await prisma.item.findUnique({ where: { slug: itemSlug } }))
     ?.id;
   if (!itemId) throw new Error("Item doesnt exist");
-  return await prisma.comment.create({
+  const res = await prisma.comment.create({
     data: { text: text, itemId, authorId },
   });
+  return res;
 }

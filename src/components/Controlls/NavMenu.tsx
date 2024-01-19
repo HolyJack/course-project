@@ -2,12 +2,11 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
 
 import { authOptions } from "@/shared/authOptions";
 import ProfileBtn from "@/components/User/ProfileBtn";
+import SignIn from "../User/SignIn";
 const DarkModeButton = dynamic(
   () => import("@/components/Controlls/DarkModeButton"),
 );
@@ -18,8 +17,8 @@ function Logo() {
     <h1 className="group text-3xl font-bold">
       📦{" "}
       <span
-        className="from-primary to-accent text-text bg-gradient-to-r
-            bg-clip-text transition-all duration-500 group-hover:text-transparent"
+        className="bg-gradient-to-r from-primary to-accent bg-clip-text
+            text-text transition-all duration-500 group-hover:text-transparent"
       >
         {t("title")}
       </span>
@@ -45,7 +44,7 @@ async function AuthButton() {
       />
     );
 
-  return <Button onClick={() => signIn()}>{t("signin")}</Button>;
+  return <SignIn>{t("signin")}</SignIn>;
 }
 
 export function NavMenu() {
