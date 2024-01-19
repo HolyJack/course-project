@@ -1,11 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -37,16 +37,16 @@ model Session {
 model User {
   id            String       @id @default(cuid())
   name          String?
-  slug          String       @unique
   email         String?      @unique
   emailVerified DateTime?
   image         String?
   role          Role         @default(AUTHOR)
+  slug          String       @unique
   accounts      Account[]
   collections   Collection[]
-  sessions      Session[]
   comments      Comment[]
   likes         Like[]
+  sessions      Session[]
 }
 
 model VerificationToken {
@@ -58,19 +58,23 @@ model VerificationToken {
 }
 
 model Collection {
-  id           Int           @id @default(autoincrement())
+  id           Int                      @id @default(autoincrement())
   title        String
-  slug         String       @unique
   description  String
   topicId      Int
   imgageUrl    String?
   authorId     String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  author       User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  topic        Topic        @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+  slug         String                   @unique
+  body         String?
+  fts          Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, ((title || ' '::text) || description))"))
+  author       User                     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  topic        Topic                    @relation(fields: [topicId], references: [id], onDelete: Cascade)
   customFields CustomField[]
   items        Item[]
+
+  @@index([fts], map: "collection_fts", type: Gin)
 }
 
 model CustomField {
@@ -78,7 +82,7 @@ model CustomField {
   type         CustomFieldTypes
   state        Boolean            @default(true)
   value        String
-  collectionId Int  
+  collectionId Int
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt
   collection   Collection         @relation(fields: [collectionId], references: [id], onDelete: Cascade)
@@ -101,25 +105,26 @@ model CustomFieldValue {
 }
 
 model Item {
-  id                Int                @id @default(autoincrement())
+  id                Int                      @id @default(autoincrement())
   name              String
-  slug              String            @unique
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
   collectionId      Int
-  customFieldValues CustomFieldValue[]
-  collection        Collection         @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-  tags              TagsOnItems[]
+  slug              String                   @unique
+  fts               Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, name)"))
   comments          Comment[]
+  customFieldValues CustomFieldValue[]
+  collection        Collection               @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   likes             Like[]
+  tags              TagsOnItems[]
 }
 
 model Tag {
   id        Int           @id @default(autoincrement())
   name      String        @unique
-  slug      String        @unique 
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
+  slug      String        @unique
   items     TagsOnItems[]
 }
 
@@ -137,31 +142,33 @@ model TagsOnItems {
 model Topic {
   id          Int          @id @default(autoincrement())
   name        String       @unique
-  slug        String       @unique       
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  slug        String       @unique
+  name_ru     String?
   collections Collection[]
 }
 
 model Like {
   userId String
   itemId Int
-  user User @relation(fields: [userId], references: [id])
-  item Item @relation(fields: [itemId], references: [id])
-  like Boolean @default(false)
+  like   Boolean @default(false)
+  item   Item    @relation(fields: [itemId], references: [id])
+  user   User    @relation(fields: [userId], references: [id])
 
   @@id([userId, itemId])
 }
 
 model Comment {
-    id      String @id @default(cuid())
-    authorId String
-    text    String
-    itemId  Int
-    author  User @relation(fields: [authorId], references: [id])
-    item    Item @relation(fields: [itemId], references: [id])
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String                   @id @default(cuid())
+  authorId  String
+  itemId    Int
+  createdAt DateTime                 @default(now())
+  text      String
+  updatedAt DateTime                 @updatedAt
+  fts       Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, text)"))
+  author    User                     @relation(fields: [authorId], references: [id])
+  item      Item                     @relation(fields: [itemId], references: [id])
 }
 
 enum Role {

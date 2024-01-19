@@ -1,0 +1,62 @@
+{
+    "Logo": {
+        "title": "Коллекции"
+    },
+    "CollectionPage": {
+        "description": "Описание",
+        "items": "Предметы коллекции",
+        "noItems": "Предметов пока нет",
+        "addItem": {
+            "title": "Добавить новый предмет",
+            "form": {
+                "name": "Имя",
+                "tags": "Теги",
+                "addTag": "Добавить Тег",
+                "submit": "Отправить",
+                "toast": { 
+                    "success": "Успех",
+                    "failure": "Ошибка"
+                }
+            }
+        }
+    },
+    "ItemPage": {
+        "comments": "Комментарии",
+        "addComment": {
+            "submit": "Отправить"
+        }
+    },
+    "AddComment" : {
+        "form": { 
+            "submit": "Отправить"
+        }
+    },
+    "CreateCollectionPage": {
+        "title": "Новая Коллекция",
+        "form": {
+            "submit": "Отправить",
+            "title": "Заголовок",
+            "description": "Описание",
+            "topic": "Тема",
+            "customField": "Дополнительное поле",
+            "addCustomField": "Добавить поле",
+            "removeCustomField": "Удалить",
+            "image": "Изображение",
+            "toast": {
+                "success": "Коллекция была создана",
+                "failure": "Что-то пошло не так" }
+        }
+    },
+    "BiggestCollections" : {
+        "title": "Самые большие Коллекции"
+    },
+    "RecentCollections" : {
+        "title": "Новые Коллекции"
+    },
+    "AuthButton": {
+        "signin": "Войти",
+        "signout": "Выйти",
+        "newCollection": "Добавить Коллекцию",
+        "profile": "Профиль"
+    }
+}

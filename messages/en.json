@@ -1,0 +1,62 @@
+{
+    "Logo": {
+        "title": "Collections"
+    },
+    "CollectionPage": {
+        "description": "Description",
+        "items": "Items",
+        "noItems": "No Items yet",
+        "addItem": {
+            "title": "Add Item",
+            "form": {
+                "name": "Name",
+                "tags": "Tags",
+                "addTag": "Add Tag",
+                "submit": "Submit",
+                "toast": { 
+                    "success": "Success",
+                    "failure": "Failed"
+                }
+            }
+        }
+    },
+    "ItemPage": {
+        "comments": "Comments",
+        "addComment": {
+            "submit": "Submit"
+        }
+    },
+    "AddComment" : {
+        "form": { 
+            "submit": "Submit"
+        }
+    },
+    "CreateCollectionPage": {
+        "title": "Create Collection",
+        "form": {
+            "submit": "Submit",
+            "title": "Title",
+            "description": "Description",
+            "topic": "Topic",
+            "customField": "Custom Field",
+            "addCustomField": "Add Custom Field",
+            "removeCustomField": "Remove",
+            "image": "Image",
+            "toast": {
+                "success": "Collecion has been created",
+                "failure": "Something went wrong" }
+        }
+    },
+    "BiggestCollections" : {
+        "title": "Biggest Collections"
+    },
+    "RecentCollections" : {
+        "title": "Recent Collections"
+    },
+    "AuthButton": {
+        "signin": "Sign In",
+        "signout": "Sign Out",
+        "newCollection": "New Collection",
+        "profile": "Profile"
+    }
+}
