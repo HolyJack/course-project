@@ -1,8 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import slugify from "slugify";
 
-const modelsToSlug = ["User", "Collection", "Item", "Tag"];
-
 async function generateUniqueSlug(
   name: string,
   cf: (slug: string) => Promise<number>,

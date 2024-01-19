@@ -2,9 +2,7 @@
 import prisma from "../db/db";
 
 export default async function Search(text: string) {
-  console.log(text);
   const collections = await prisma.collection.findMany({
-    take: 10,
     where: {
       OR: [
         { title: { search: text } },
@@ -14,6 +12,5 @@ export default async function Search(text: string) {
       ],
     },
   });
-  console.log(collections);
   return collections;
 }
