@@ -6,17 +6,22 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import prisma from "@/shared/db/db";
+import { unstable_setRequestLocale } from "next-intl/server";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
 export default async function SearchPage({
+  params: { locale },
   searchParams,
 }: {
+  params: { locale: string };
   searchParams: {
     tag?: string;
   };
 }) {
+  unstable_setRequestLocale(locale);
+
   const baseQuery = {
     include: {
       author: { select: { slug: true, name: true } },
@@ -48,7 +53,7 @@ export default async function SearchPage({
               <CardTitle>
                 <h2>
                   <Link
-                    className="hover:text-primary text-xl"
+                    className="text-xl hover:text-primary"
                     href={`/collection/${collection.author.slug}/${collection.slug}`}
                   >
                     {collection.title}

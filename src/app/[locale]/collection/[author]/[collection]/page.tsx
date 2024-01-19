@@ -1,6 +1,6 @@
 import prisma from "@/shared/db/db";
 import { getServerSession } from "next-auth";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,8 +20,9 @@ export const dynamic = "force-dynamic";
 export default async function CollectionPage({
   params,
 }: {
-  params: { author: string; collection: string };
+  params: { author: string; collection: string; locale: string };
 }) {
+  unstable_setRequestLocale(params.locale);
   const t = await getTranslations("CollectionPage");
   const collection = await prisma.collection.findFirst({
     where: { author: { slug: params.author }, slug: params.collection },
@@ -43,7 +44,7 @@ export default async function CollectionPage({
         {collection.title}
       </h1>
       <Image
-        className="border-shadow shadow-shadow h-auto w-full overflow-hidden rounded-md border shadow"
+        className="h-auto w-full overflow-hidden rounded-md border border-shadow shadow shadow-shadow"
         src={collection.imgageUrl ?? ""}
         width={1000}
         height={1000}
@@ -63,7 +64,7 @@ export default async function CollectionPage({
                 <button>
                   <Cross
                     size={25}
-                    className="hover:text-primary cursor-pointer"
+                    className="cursor-pointer hover:text-primary"
                   />
                 </button>
               </DialogTrigger>

@@ -1,13 +1,18 @@
 import prisma from "@/shared/db/db";
 import { getServerSession } from "next-auth";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/shared/authOptions";
 
 import AddCollection from "@/components/Collection/AddCollection";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 
-export default async function CreateCollectionPage() {
+export default async function CreateCollectionPage({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations("CreateCollectionPage");
   const session = await getServerSession(authOptions);
   const topics = (await prisma.topic.findMany({ select: { name: true } })).map(
