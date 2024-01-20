@@ -1,8 +1,9 @@
+import { unstable_setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
+
 import BiggestCollections from "@/components/Collection/BiggestCollections";
 import RecentCollections from "@/components/Collection/RecentCollections";
 import Tags from "@/components/Collection/Tags";
-import { unstable_setRequestLocale } from "next-intl/server";
-import { Suspense } from "react";
 
 export const revalidate = 0;
 

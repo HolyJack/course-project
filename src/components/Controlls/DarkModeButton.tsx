@@ -3,12 +3,11 @@
 import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/shared/utils";
 
 const activeIconStyle =
-  "transition duration-300 group-hover:rotate-45 group-hover:opacity-0";
+  "duration-600 bg-background text-text transition group-hover:rotate-90 group-hover:opacity-0";
 const hoverIconStyle =
-  "-rotate-45 opacity-0 transition duration-300 group-hover:rotate-0 group-hover:opacity-100";
+  "duration-600 -rotate-90 bg-text text-background opacity-0 transition group-hover:rotate-0 group-hover:opacity-100";
 
 function IconContainer({ ...props }) {
   return (
@@ -22,33 +21,25 @@ function IconContainer({ ...props }) {
 export default function DarkModeButton() {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
+
   return (
     <Button
       variant={"ghost"}
-      className="group relative h-10 w-10 rounded-full bg-background transition duration-300 hover:bg-text"
+      className="duration-600 group relative h-10 w-10 rounded-full bg-background transition hover:bg-text"
       onClick={() =>
         currentTheme === "dark" ? setTheme("light") : setTheme("dark")
       }
     >
-      {currentTheme === "dark" ? (
-        <>
-          <IconContainer>
-            <MoonIcon className={cn("text-white", activeIconStyle)} />
-          </IconContainer>
-          <IconContainer>
-            <SunIcon className={cn("text-black", hoverIconStyle)} />
-          </IconContainer>
-        </>
-      ) : (
-        <>
-          <IconContainer>
-            <SunIcon className={cn("text-black", activeIconStyle)} />
-          </IconContainer>
-          <IconContainer>
-            <MoonIcon className={cn("text-white", hoverIconStyle)} />
-          </IconContainer>
-        </>
-      )}
+      <IconContainer>
+        <SunIcon
+          className={currentTheme === "dark" ? hoverIconStyle : activeIconStyle}
+        />
+      </IconContainer>
+      <IconContainer>
+        <MoonIcon
+          className={currentTheme === "dark" ? activeIconStyle : hoverIconStyle}
+        />
+      </IconContainer>
     </Button>
   );
 }

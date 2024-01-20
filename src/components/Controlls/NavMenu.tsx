@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { authOptions } from "@/shared/authOptions";
 import ProfileBtn from "@/components/User/ProfileBtn";
-import SignIn from "../User/SignIn";
+import SignIn from "@/components/User/SignIn";
 const DarkModeButton = dynamic(
   () => import("@/components/Controlls/DarkModeButton"),
 );

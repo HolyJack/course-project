@@ -56,7 +56,7 @@
     "AuthButton": {
         "signin": "Sign In",
         "signout": "Sign Out",
-        "newCollection": "New Collection",
+        "newCollection": "Create Collection",
         "profile": "Profile"
     }
 }

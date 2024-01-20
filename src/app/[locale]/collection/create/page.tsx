@@ -23,7 +23,9 @@ export default async function CreateCollectionPage({
 
   return (
     <Card className="mx-auto">
-      <CardHeader className="font-bold">{t("title")}</CardHeader>
+      <CardHeader>
+        <h1 className="text-center text-3xl font-bold">{t("title")}</h1>
+      </CardHeader>
       <CardContent>
         <AddCollection
           labels={{

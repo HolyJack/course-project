@@ -100,65 +100,63 @@ export default function AddItem({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="capitalize">{labels.name}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <section className="space-y-2">
+          <Label>{"Tags"}</Label>
+          <div className="flex flex-wrap gap-5">
+            {tags.map((tag, id) => (
+              <Badge
+                className="flex justify-between gap-2 text-sm"
+                variant="secondary"
+                key={tag.id}
+              >
+                <p>{tag.value}</p>
+                <button onClick={() => removeTag(id)}>
+                  <X size={12} />
+                </button>
+              </Badge>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <Input value={tag} onChange={(e) => setTag(e.target.value)} />
+            <Button type="button" onClick={() => appendTag({ value: tag })}>
+              {labels.addTag}
+            </Button>
+          </div>
+        </section>
+        {cfValues.map((val, index) => (
           <FormField
+            key={val.id}
             control={form.control}
-            name="name"
+            name={`customFieldsValues.${index}.value`}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="capitalize">{labels.name}</FormLabel>
+                <FormLabel className="capitalize">{val.name}</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input
+                    type={inputTypeMap[val.type]}
+                    onBlur={field.onBlur}
+                    onChange={field.onChange}
+                    disabled={field.disabled}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <section className="space-y-2">
-            <Label>{"Tags"}</Label>
-            <div className="flex flex-wrap gap-5">
-              {tags.map((tag, id) => (
-                <Badge
-                  className="flex justify-between gap-2 text-sm"
-                  variant="secondary"
-                  key={tag.id}
-                >
-                  <p>{tag.value}</p>
-                  <button onClick={() => removeTag(id)}>
-                    <X size={12} />
-                  </button>
-                </Badge>
-              ))}
-            </div>
-            <div className="flex">
-              <Input value={tag} onChange={(e) => setTag(e.target.value)} />
-              <Button type="button" onClick={() => appendTag({ value: tag })}>
-                {labels.addTag}
-              </Button>
-            </div>
-          </section>
-          {cfValues.map((val, index) => (
-            <FormField
-              key={val.id}
-              control={form.control}
-              name={`customFieldsValues.${index}.value`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="capitalize">{val.name}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type={inputTypeMap[val.type]}
-                      onBlur={field.onBlur}
-                      onChange={field.onChange}
-                      disabled={field.disabled}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-        </div>
+        ))}
         <Button
           type="submit"
           variant="default"

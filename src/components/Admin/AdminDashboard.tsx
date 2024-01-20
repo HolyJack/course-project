@@ -1,5 +1,6 @@
 "use client";
 
+import { Role } from "@prisma/client";
 import { ColDef, IDatasource } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -13,10 +14,20 @@ interface AdminDashboardProps {
 const AdminDashboard = forwardRef<AgGridReact, AdminDashboardProps>(
   (props, ref) => {
     const [columnDefs] = useState<ColDef[]>([
+      {
+        field: "",
+        checkboxSelection: true,
+        headerCheckboxSelection: true,
+      },
       { field: "email" },
-      { field: "username" },
-      { field: "collections" },
-      { field: "role" },
+      { field: "name" },
+      { field: "active", editable: true, cellDataType: "boolean" },
+      {
+        field: "role",
+        editable: true,
+        cellEditor: "agSelectCellEditor",
+        cellEditorParams: { values: [Role.ADMIN, Role.AUTHOR] },
+      },
     ]);
     const defaultColDef = useMemo<ColDef>(() => {
       return {
@@ -40,9 +51,9 @@ const AdminDashboard = forwardRef<AgGridReact, AdminDashboardProps>(
           />
           <style jsx global>{`
             .ag-theme-quartz {
-              --ag-active-color: var(--accent);
-              --ag-foreground-color: var(--text);
-              --ag-background-color: var(--background);
+              --ag-active-color: rgb(var(--accent));
+              --ag-foreground-color: rgb(var(--text));
+              --ag-background-color: rgb(var(--background));
               --ag-border-color: rgb(var(--shadow));
             }
           `}</style>

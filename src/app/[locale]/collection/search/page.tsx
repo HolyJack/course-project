@@ -44,7 +44,7 @@ export default async function SearchPage({
     });
   }
   return (
-    <section className="mx-auto w-full max-w-xl space-y-6">
+    <section className="mx-auto w-full max-w-screen-md space-y-6">
       <h1 className="text-bold text-3xl">Search Results</h1>
       <div className="space-y-6">
         {collections.map((collection, id) => (

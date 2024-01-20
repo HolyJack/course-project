@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["fullTextSearch", "relationJoins"]
 }
 
 datasource db {
@@ -41,6 +41,7 @@ model User {
   emailVerified DateTime?
   image         String?
   role          Role         @default(AUTHOR)
+  active        Boolean      @default(true)
   slug          String       @unique
   accounts      Account[]
   collections   Collection[]

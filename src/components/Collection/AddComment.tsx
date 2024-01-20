@@ -51,7 +51,7 @@ export default function AddComment({ itemSlug }: { itemSlug: string }) {
             <FormItem>
               <FormControl>
                 <Textarea
-                  placeholder="My Favorite books is so Amazing..."
+                  placeholder="Add your comment:"
                   {...field}
                   disabled={isLoading}
                 />
