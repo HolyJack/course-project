@@ -22,14 +22,13 @@ export default function CollectionCard({
       className="group space-y-3 "
     >
       <div
-        className="relative aspect-[16/12] overflow-hidden rounded-xl
-        border border-shadow object-cover"
+        className="border-shadow relative aspect-[16/12] overflow-hidden
+        rounded-xl border"
       >
         <Image
-          className="min-h-full min-w-full transition duration-300"
+          className="object-cover transition duration-300"
           src={imageUrl ?? ""}
-          width={650}
-          height={500}
+          fill={true}
           alt={title}
         />
         <div
@@ -44,7 +43,7 @@ export default function CollectionCard({
         </div>
       </div>
       <div className="flex space-x-1.5 text-xl transition duration-300">
-        <h3 className="max-w-[50%] truncate font-bold capitalize transition duration-300 group-hover:text-primary">
+        <h3 className="group-hover:text-primary max-w-[50%] truncate font-bold capitalize transition duration-300">
           {title}
         </h3>
         <p>by {author}</p>

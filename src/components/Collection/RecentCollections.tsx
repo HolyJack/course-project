@@ -1,6 +1,8 @@
 import prisma from "@/shared/db/db";
 import CollectionCard from "./CollectionCard";
 import { getTranslations } from "next-intl/server";
+import { Button } from "../ui/Button";
+import Link from "next/link";
 
 const AMOUNT = 5;
 
@@ -41,8 +43,19 @@ export default async function RecentCollections() {
             />
           ),
         )}
+
+        <Button
+          variant="outline"
+          className="h-full w-full rounded-xl p-0 text-3xl font-bold"
+        >
+          <Link
+            href="/collection/search?created=des"
+            className="flex h-full w-full items-center justify-center"
+          >
+            View All
+          </Link>
+        </Button>
       </div>
-      <div></div>
     </section>
   );
 }

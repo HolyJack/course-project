@@ -17,8 +17,8 @@ function Logo() {
     <h1 className="group text-3xl font-bold">
       📦{" "}
       <span
-        className="bg-gradient-to-r from-primary to-accent bg-clip-text
-            text-text transition-all duration-500 group-hover:text-transparent"
+        className="from-primary to-accent text-text hidden
+            bg-gradient-to-r bg-clip-text transition-all duration-500 group-hover:text-transparent sm:inline-block"
       >
         {t("title")}
       </span>
