@@ -4,9 +4,8 @@ import { redirect } from "next/navigation";
 import prisma from "@/shared/db/db";
 import { Badge } from "@/components/ui/Badge";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import CommentSection from "@/components/Collection/CommentSection";
-import { Separator } from "@/components/ui/Separator";
 import { ChevronLeft } from "lucide-react";
 
 export default async function CollectionItemPage({
@@ -36,12 +35,11 @@ export default async function CollectionItemPage({
     <Card className="mx-auto w-full max-w-screen-sm">
       <CardHeader>
         <div className="relative flex items-center justify-center">
-          <Link href={"."} className="absolute right-0 hover:text-primary">
+          <Link href={"."} className="hover:text-primary absolute left-0">
             <ChevronLeft />
           </Link>
           <h1 className="text-center text-4xl font-bold">{item?.name}</h1>
         </div>
-        <Separator />
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
