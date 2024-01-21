@@ -42,7 +42,7 @@ export default function CollectionCard({
           </div>
         </div>
       </div>
-      <div className="flex space-x-1.5 text-xl transition duration-300">
+      <div className="flex flex-wrap gap-1.5 text-xl transition duration-300">
         <h3 className="group-hover:text-primary max-w-[50%] truncate font-bold capitalize transition duration-300">
           {title}
         </h3>

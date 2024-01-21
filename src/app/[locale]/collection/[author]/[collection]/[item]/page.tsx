@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import CommentSection from "@/components/Collection/CommentSection";
 import { ChevronLeft } from "lucide-react";
+import { Separator } from "@/components/ui/Separator";
 
 export default async function CollectionItemPage({
   params,
@@ -32,8 +33,11 @@ export default async function CollectionItemPage({
   const t = await getTranslations("ItemPage");
 
   return (
-    <Card className="mx-auto w-full max-w-screen-sm">
-      <CardHeader>
+    <Card
+      className="sm:border-shadow sm:shadow-shadow mx-auto w-full
+      max-w-screen-md border-0 shadow-none sm:border sm:shadow"
+    >
+      <CardHeader className="p-0 py-6 sm:p-6">
         <div className="relative flex items-center justify-center">
           <Link href={"."} className="hover:text-primary absolute left-0">
             <ChevronLeft />
@@ -41,7 +45,7 @@ export default async function CollectionItemPage({
           <h1 className="text-center text-4xl font-bold">{item?.name}</h1>
         </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 p-0 py-6 sm:p-6">
         <div className="space-y-2">
           <p>
             <span className="font-bold">Collection: </span>
@@ -84,6 +88,7 @@ export default async function CollectionItemPage({
             </div>
           ))}
         </div>
+        <Separator />
         <CommentSection itemSlug={params.item} />
       </CardContent>
     </Card>

@@ -22,11 +22,14 @@ export default async function CreateCollectionPage({
   if (!session?.user) redirect("/api/auth/signin");
 
   return (
-    <Card className="mx-auto">
-      <CardHeader>
+    <Card
+      className="sm:shadow-shadow sm:border-shadow mx-auto w-full
+      max-w-screen-md border-0 shadow-none sm:border sm:shadow"
+    >
+      <CardHeader className="p-0 py-6 sm:p-6">
         <h1 className="text-center text-3xl font-bold">{t("title")}</h1>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0 py-6 sm:p-6">
         <AddCollection
           labels={{
             title: t("form.title"),

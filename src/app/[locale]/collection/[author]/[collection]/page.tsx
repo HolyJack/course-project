@@ -42,20 +42,20 @@ export default async function CollectionPage({
   if (user && user.email === collection.author.email) editAccess = true;
 
   return (
-    <Card className="mx-auto w-full max-w-screen-sm">
-      <CardHeader className="gap-2">
+    <Card className="mx-auto w-full max-w-screen-md border-none shadow-none">
+      <CardHeader className="gap-4 p-0 py-6 sm:p-6">
         <h1 className="text-center text-4xl font-bold capitalize">
           {collection.title}
         </h1>
         <Image
-          className="h-auto w-full overflow-hidden rounded-md border border-shadow shadow shadow-shadow"
+          className="border-shadow shadow-shadow h-auto w-full overflow-hidden rounded-md border shadow"
           src={collection.imgageUrl ?? ""}
           width={1000}
           height={1000}
           alt={collection.title}
         />
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 p-0 py-6 sm:p-6">
         <section>
           <h2 className="text-2xl">
             <span className="font-bold">Topic: </span> {collection.topic.name}
@@ -73,7 +73,7 @@ export default async function CollectionPage({
             {editAccess && (
               <Dialog>
                 <DialogTrigger asChild>
-                  <button className="text-2xl font-bold hover:text-primary">
+                  <button className="hover:text-primary text-2xl font-bold">
                     +
                   </button>
                 </DialogTrigger>
