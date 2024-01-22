@@ -50,7 +50,7 @@ export default async function BiggestCollections() {
         >
           <Link
             href="/collection/search"
-            className="flex h-full w-full items-center justify-center"
+            className="bg-shadow/50 flex h-full w-full items-center justify-center"
           >
             View All
           </Link>
