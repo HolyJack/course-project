@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "relationJoins"]
+  previewFeatures = ["fullTextSearch", "views"]
 }
 
 datasource db {
@@ -41,8 +41,8 @@ model User {
   emailVerified DateTime?
   image         String?
   role          Role         @default(AUTHOR)
-  active        Boolean      @default(true)
   slug          String       @unique
+  active        Boolean      @default(true)
   accounts      Account[]
   collections   Collection[]
   comments      Comment[]
@@ -170,6 +170,18 @@ model Comment {
   fts       Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, text)"))
   author    User                     @relation(fields: [authorId], references: [id])
   item      Item                     @relation(fields: [itemId], references: [id])
+}
+
+view fts {
+  id          Int                      @id
+  title       String
+  description String?
+  imgageUrl   String?
+  createdAt   DateTime
+  slug        String
+  authorname  String?
+  authorslug  String
+  fts         Unsupported("tsvector")?
 }
 
 enum Role {

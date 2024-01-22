@@ -21,7 +21,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Label } from "@/components/ui/Label";
 import { ThreeDots } from "react-loader-spinner";
 
-import addItemAction, { formSchema } from "@/shared/serverActions/addItem";
+import addItemAction from "@/shared/serverActions/addItem";
+import { itemFormSchema } from "@/shared/serverActions/schemas";
 
 const defaultCustomFieldsValues: Record<CustomFieldTypes, any> = {
   INT: 0,
@@ -56,8 +57,8 @@ export default function AddItem({
 }) {
   const [tag, setTag] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof itemFormSchema>>({
+    resolver: zodResolver(itemFormSchema),
     defaultValues: {
       name: "",
       tags: [],
@@ -84,7 +85,7 @@ export default function AddItem({
     control: form.control,
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof itemFormSchema>) {
     setIsLoading(true);
     try {
       const date = await addItemAction(collectionSlug, values);

@@ -1,13 +1,9 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
-import prisma from "@/shared/db/db";
+import React from "react";
 import { unstable_setRequestLocale } from "next-intl/server";
-import Link from "next/link";
+
+import { Separator } from "@/components/ui/Separator";
+import { CollecionCard2 } from "@/components/Collection/CollectionCard2";
+import Search from "@/shared/serverActions/search";
 
 export const dynamic = "force-dynamic";
 
@@ -17,57 +13,35 @@ export default async function SearchPage({
 }: {
   params: { locale: string };
   searchParams: {
-    tag?: string;
+    fullText?: string;
   };
 }) {
   unstable_setRequestLocale(locale);
 
-  const baseQuery = {
-    include: {
-      author: { select: { slug: true, name: true } },
-      _count: { select: { items: true } },
-    },
-  };
-  let collections;
-  if (searchParams.tag) {
-    collections = await prisma.collection.findMany({
-      ...baseQuery,
-      where: {
-        items: {
-          some: { tags: { some: { tag: { slug: searchParams.tag } } } },
-        },
-      },
-    });
-  } else {
-    collections = await prisma.collection.findMany({
-      ...baseQuery,
-    });
-  }
+  const collections = await Search({
+    searchString: searchParams.fullText ?? "",
+  });
+
   return (
-    <section className="mx-auto w-full max-w-screen-md space-y-6">
-      <h1 className="text-bold text-3xl">Search Results</h1>
-      <div className="space-y-6">
+    <section className="mx-auto w-full max-w-screen-md">
+      <h1 className="p-6 text-3xl">
+        <span className="font-bold">Search Results</span> {collections.length}
+      </h1>
+      <div>
+        <Separator />
         {collections.map((collection, id) => (
-          <Card key={id}>
-            <CardHeader>
-              <CardTitle>
-                <h2>
-                  <Link
-                    className="text-xl hover:text-primary"
-                    href={`/collection/${collection.author.slug}/${collection.slug}`}
-                  >
-                    {collection.title}
-                  </Link>
-                </h2>
-              </CardTitle>
-              <CardDescription>
-                items: {collection._count.items}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="line-clamp-3">
-              {collection.description}
-            </CardContent>
-          </Card>
+          <React.Fragment key={id}>
+            <CollecionCard2
+              title={collection.title ?? ""}
+              description={collection.description ?? ""}
+              imageUrl={collection.imgageUrl ?? ""}
+              slug={collection.slug}
+              createdAt={collection.createdAt}
+              authorName={collection.authorname ?? ""}
+              authorSlug={collection.authorslug}
+            />
+            <Separator />
+          </React.Fragment>
         ))}
       </div>
     </section>

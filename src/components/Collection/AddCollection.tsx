@@ -25,12 +25,10 @@ import {
 import { CustomFieldTypes } from "@prisma/client";
 import { Textarea } from "@/components/ui/TextArea";
 import { Label } from "@/components/ui/Label";
-import {
-  addCollection,
-  formSchema,
-} from "@/shared/serverActions/addCollection";
+import { addCollection } from "@/shared/serverActions/addCollection";
 import { useState } from "react";
 import { toast } from "sonner";
+import { collectionFormSchema } from "@/shared/serverActions/schemas";
 
 export default function AddCollection({
   labels,
@@ -53,8 +51,8 @@ export default function AddCollection({
   topics: string[];
 }) {
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof collectionFormSchema>>({
+    resolver: zodResolver(collectionFormSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -69,7 +67,7 @@ export default function AddCollection({
     control: form.control,
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof collectionFormSchema>) {
     setIsLoading(true);
     try {
       const response = await fetch(

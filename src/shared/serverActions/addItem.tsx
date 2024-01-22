@@ -1,50 +1,11 @@
 "use server";
 
-import { CustomFieldTypes } from "@prisma/client";
 import { z } from "zod";
 import prisma from "../db/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../authOptions";
 import slugify from "slugify";
-
-export const formSchema = z.object({
-  name: z.string().min(2, "Item name should be atleast 2 characters."),
-  tags: z.array(z.object({ value: z.string() })),
-  customFieldsValues: z.array(
-    z.discriminatedUnion("type", [
-      z.object({
-        type: z.literal(CustomFieldTypes.INT),
-        id: z.number(),
-        name: z.string(),
-        value: z.coerce.number(),
-      }),
-      z.object({
-        type: z.literal(CustomFieldTypes.DATE),
-        id: z.number(),
-        name: z.string(),
-        value: z.coerce.date(),
-      }),
-      z.object({
-        type: z.literal(CustomFieldTypes.TEXT),
-        id: z.number(),
-        name: z.string(),
-        value: z.string(),
-      }),
-      z.object({
-        type: z.literal(CustomFieldTypes.STRING),
-        id: z.number(),
-        name: z.string(),
-        value: z.string(),
-      }),
-      z.object({
-        type: z.literal(CustomFieldTypes.BOOLEAN),
-        id: z.number(),
-        name: z.string(),
-        value: z.coerce.boolean(),
-      }),
-    ]),
-  ),
-});
+import { itemFormSchema } from "./schemas";
 
 const typeToFieldMap = {
   INT: "intValue",
@@ -56,9 +17,8 @@ const typeToFieldMap = {
 
 export default async function addItemAction(
   collectionSlug: string,
-  data: z.infer<typeof formSchema>,
+  data: z.infer<typeof itemFormSchema>,
 ) {
-  formSchema.parse(data);
   const user = (await getServerSession(authOptions))?.user;
   if (!user || !user.email) return false;
   const collection = await prisma.collection.findUnique({

@@ -10,7 +10,10 @@ export default async function Tags() {
     <section className="flex flex-wrap gap-4 ">
       {tags.map((tag) => (
         <Badge key={tag.id} className="text-base">
-          <Link className="w-full" href={`/collection/search?tag=${tag.slug}`}>
+          <Link
+            className="w-full"
+            href={`/collection/search?fullText=${tag.slug}`}
+          >
             {tag.name}
           </Link>
         </Badge>

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { authOptions } from "@/shared/authOptions";
 import ProfileBtn from "@/components/User/ProfileBtn";
 import SignIn from "@/components/User/SignIn";
+import SearchButton from "@/components/Controlls/SearchButton";
 const DarkModeButton = dynamic(
   () => import("@/components/Controlls/DarkModeButton"),
 );
@@ -57,6 +58,7 @@ export function NavMenu() {
         <Logo />
       </Link>
       <div className="flex gap-4">
+        <SearchButton />
         <AuthButton />
         <DarkModeButton />
       </div>

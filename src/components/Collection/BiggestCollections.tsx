@@ -49,7 +49,7 @@ export default async function BiggestCollections() {
           className="aspect-[16/12] h-full w-full rounded-xl p-0 text-3xl font-bold"
         >
           <Link
-            href="/collection/search?items_count=des"
+            href="/collection/search"
             className="flex h-full w-full items-center justify-center"
           >
             View All

@@ -1,43 +1,11 @@
 "use server";
 
-import { CustomFieldTypes } from "@prisma/client";
 import { z } from "zod";
 import prisma from "../db/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../authOptions";
 import slugify from "slugify";
-
-const dataSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
-  }),
-  description: z.string().optional(),
-  topic: z.string(),
-  customFields: z
-    .array(
-      z.object({ type: z.nativeEnum(CustomFieldTypes), value: z.string() }),
-    )
-    .optional(),
-});
-
-const MAX_FILE_SIZE = 45000000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
-
-const imageFileSchema = z.object({
-  image: z
-    .custom<File>((v) => v instanceof File, {
-      message: "Image is required",
-    })
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
-      `Only .jpeg, .jpg and .png are supported`,
-    )
-    .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 4.5MB.`)
-    .optional(),
-});
-
-export const formSchema = dataSchema.merge(imageFileSchema);
-const collectionSchema = dataSchema.merge(z.object({ image: z.string() }));
+import { collectionSchema } from "./schemas";
 
 export async function addCollection(values: z.infer<typeof collectionSchema>) {
   collectionSchema.parse(values);

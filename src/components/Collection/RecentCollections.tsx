@@ -49,7 +49,7 @@ export default async function RecentCollections() {
           className="h-full w-full rounded-xl p-0 text-3xl font-bold"
         >
           <Link
-            href="/collection/search?created=des"
+            href="/collection/search"
             className="flex h-full w-full items-center justify-center"
           >
             View All

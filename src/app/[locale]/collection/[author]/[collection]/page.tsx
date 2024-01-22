@@ -4,7 +4,6 @@ import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, Cross } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -56,18 +55,17 @@ export default async function CollectionPage({
         />
       </CardHeader>
       <CardContent className="space-y-6 p-0 py-6 sm:p-6">
-        <section>
-          <h2 className="text-2xl">
-            <span className="font-bold">Topic: </span> {collection.topic.name}
-          </h2>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">Topic</h2>
+          <p>{collection.topic.name}</p>
         </section>
 
-        <section>
+        <section className="space-y-4">
           <h2 className="text-2xl font-bold capitalize">{t("description")}</h2>
           <p>{collection.description}</p>
         </section>
 
-        <section>
+        <section className="space-y-4">
           <div className="flex items-center gap-2">
             <h2 className="text-2xl font-bold capitalize ">{t("items")}</h2>
             {editAccess && (
@@ -112,9 +110,7 @@ export default async function CollectionPage({
               ))}
             </div>
           )}
-          {!collection.items.length && (
-            <p className="text-center">{t("noItems")}</p>
-          )}
+          {!collection.items.length && <p>{t("noItems")}</p>}
         </section>
       </CardContent>
     </Card>
