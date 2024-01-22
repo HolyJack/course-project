@@ -1,6 +1,5 @@
 import prisma from "@/shared/db/db";
-import { Badge } from "@/components/ui/Badge";
-import Link from "next/link";
+import Tag from "../ui/Tag";
 
 export default async function Tags() {
   const tags = await prisma.tag.findMany({
@@ -9,14 +8,7 @@ export default async function Tags() {
   return (
     <section className="flex flex-wrap gap-4 ">
       {tags.map((tag) => (
-        <Badge key={tag.id} className="text-base">
-          <Link
-            className="w-full"
-            href={`/collection/search?fullText=${tag.slug}`}
-          >
-            {tag.name}
-          </Link>
-        </Badge>
+        <Tag key={tag.id} name={tag.name} />
       ))}
     </section>
   );

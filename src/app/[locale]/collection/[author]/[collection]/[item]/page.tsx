@@ -2,12 +2,12 @@ import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 import prisma from "@/shared/db/db";
-import { Badge } from "@/components/ui/Badge";
 import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import CommentSection from "@/components/Collection/CommentSection";
 import { ChevronLeft } from "lucide-react";
 import { Separator } from "@/components/ui/Separator";
+import Tag from "@/components/ui/Tag";
 
 export default async function CollectionItemPage({
   params,
@@ -34,12 +34,12 @@ export default async function CollectionItemPage({
 
   return (
     <Card
-      className="sm:border-shadow sm:shadow-shadow mx-auto w-full
-      max-w-screen-md border-0 shadow-none sm:border sm:shadow"
+      className="mx-auto w-full max-w-screen-md border-0
+      shadow-none sm:border sm:border-shadow sm:shadow sm:shadow-shadow"
     >
       <CardHeader className="p-0 py-6 sm:p-6">
         <div className="relative flex items-center justify-center">
-          <Link href={"."} className="hover:text-primary absolute left-0">
+          <Link href={"."} className="absolute left-0 hover:text-primary">
             <ChevronLeft />
           </Link>
           <h1 className="text-center text-4xl font-bold">{item?.name}</h1>
@@ -60,14 +60,7 @@ export default async function CollectionItemPage({
             <div className="flex flex-wrap gap-4 text-base">
               <div className="font-bold">Tags:</div>
               {item.tags.map(({ tag: { name, slug } }, id) => (
-                <Badge key={id}>
-                  <Link
-                    className="w-full"
-                    href={`/collection/search?tag=${slug}`}
-                  >
-                    {name}
-                  </Link>
-                </Badge>
+                <Tag key={id} name={name} />
               ))}
             </div>
           )}
