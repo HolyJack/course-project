@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { UseFormReturn, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -23,6 +23,20 @@ import { ThreeDots } from "react-loader-spinner";
 
 import addItemAction from "@/shared/serverActions/addItem";
 import { itemFormSchema } from "@/shared/serverActions/schemas";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/PopOver";
+import {
+  Command,
+  CommandInput,
+  CommandItem,
+  CommandGroup,
+  CommandEmpty,
+} from "@/components/ui/Command";
+import { CheckIcon } from "@radix-ui/react-icons";
+import { cn } from "@/shared/utils";
 
 const defaultCustomFieldsValues: Record<CustomFieldTypes, any> = {
   INT: 0,
@@ -40,8 +54,99 @@ const inputTypeMap: Record<CustomFieldTypes, string> = {
   STRING: "Text",
 };
 
+function TagsInput({
+  labels: { addTag },
+  form,
+  defaultTags,
+}: {
+  labels: { addTag: string };
+  defaultTags: string[];
+  form: UseFormReturn<z.infer<typeof itemFormSchema>>;
+}) {
+  const [tag, setTag] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const {
+    fields: tags,
+    append: appendTag,
+    remove: removeTag,
+  } = useFieldArray({
+    name: "tags",
+    control: form.control,
+  });
+  return (
+    <section className="space-y-2">
+      <Label>{"Tags"}</Label>
+      <div className="flex flex-wrap gap-2">
+        {tags.map((tag, id) => (
+          <Badge
+            className="flex justify-between gap-2 text-sm"
+            variant="secondary"
+            key={tag.id}
+          >
+            <p>{tag.value}</p>
+            <button onClick={() => removeTag(id)}>
+              <X size={12} />
+            </button>
+          </Badge>
+        ))}
+      </div>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            className="w-full"
+            type="button"
+            variant={"outline"}
+            role="combobox"
+            aria-expanded={open}
+          >
+            Select tags
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="p-0">
+          <Command>
+            <CommandInput value={tag} onValueChange={setTag} />
+            <CommandEmpty onSelect={() => appendTag({ value: tag })}>
+              {`${addTag} "${tag}"`}
+            </CommandEmpty>
+            <CommandGroup>
+              {defaultTags.map((tag) => (
+                <CommandItem
+                  key={tag}
+                  value={tag}
+                  onSelect={() => {
+                    if (tags.map((tag) => tag.value).includes(tag)) {
+                      const index = tags.findIndex(
+                        ({ value }) => value === tag,
+                      );
+                      removeTag(index);
+                    } else {
+                      appendTag({ value: tag });
+                    }
+                  }}
+                >
+                  {tag}
+                  <CheckIcon
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      tags.map((tag) => tag.value).includes(tag)
+                        ? "opacity-100"
+                        : "opacity-0",
+                    )}
+                  />{" "}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </section>
+  );
+}
+
 export default function AddItem({
   labels,
+  defaultTags,
   collectionSlug,
   customFields,
 }: {
@@ -52,10 +157,10 @@ export default function AddItem({
     submit: string;
     toast: { success: string; failure: string };
   };
+  defaultTags: string[];
   collectionSlug: string;
   customFields: CustomField[];
 }) {
-  const [tag, setTag] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof itemFormSchema>>({
     resolver: zodResolver(itemFormSchema),
@@ -69,15 +174,6 @@ export default function AddItem({
         value: defaultCustomFieldsValues[customField.type],
       })),
     },
-  });
-
-  const {
-    fields: tags,
-    append: appendTag,
-    remove: removeTag,
-  } = useFieldArray({
-    name: "tags",
-    control: form.control,
   });
 
   const { fields: cfValues } = useFieldArray({
@@ -114,29 +210,11 @@ export default function AddItem({
             </FormItem>
           )}
         />
-        <section className="space-y-2">
-          <Label>{"Tags"}</Label>
-          <div className="flex flex-wrap gap-5">
-            {tags.map((tag, id) => (
-              <Badge
-                className="flex justify-between gap-2 text-sm"
-                variant="secondary"
-                key={tag.id}
-              >
-                <p>{tag.value}</p>
-                <button onClick={() => removeTag(id)}>
-                  <X size={12} />
-                </button>
-              </Badge>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <Input value={tag} onChange={(e) => setTag(e.target.value)} />
-            <Button type="button" onClick={() => appendTag({ value: tag })}>
-              {labels.addTag}
-            </Button>
-          </div>
-        </section>
+        <TagsInput
+          form={form}
+          defaultTags={defaultTags ?? []}
+          labels={{ addTag: labels.addTag }}
+        />
         {cfValues.map((val, index) => (
           <FormField
             key={val.id}

@@ -37,7 +37,11 @@ export const collectionSchema = dataSchema.merge(
 
 export const itemFormSchema = z.object({
   name: z.string().min(2, "Item name should be atleast 2 characters."),
-  tags: z.array(z.object({ value: z.string() })),
+  tags: z.array(
+    z.object({
+      value: z.string(),
+    }),
+  ),
   customFieldsValues: z.array(
     z.discriminatedUnion("type", [
       z.object({

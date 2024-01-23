@@ -35,6 +35,9 @@ export default async function CollectionPage({
     },
   });
   if (!collection) return redirect("/");
+  const tags = (await prisma.tag.findMany({ select: { name: true } })).map(
+    ({ name }) => name,
+  );
   const user = (await getServerSession(authOptions))?.user;
   let editAccess = false;
 
@@ -90,6 +93,7 @@ export default async function CollectionPage({
                         failure: t("addItem.form.toast.failure"),
                       },
                     }}
+                    defaultTags={tags}
                     customFields={collection.customFields}
                     collectionSlug={params.collection}
                   />

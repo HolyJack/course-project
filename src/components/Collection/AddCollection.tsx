@@ -85,6 +85,7 @@ export default function AddCollection({
       toast(labels.toast.success, {
         description: (res.createdAt as Date).toLocaleString(),
       });
+      form.reset();
     } catch {
       toast(labels.toast.failure);
     }

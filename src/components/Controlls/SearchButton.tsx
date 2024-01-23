@@ -1,5 +1,8 @@
 "use client";
 
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Command,
   CommandInput,
@@ -8,45 +11,69 @@ import {
   CommandItem,
   CommandList,
   CommandDialog,
+  CommandSeparator,
 } from "../ui/Command";
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { fts } from "@prisma/client";
 import { toast } from "sonner";
 import search from "@/shared/serverActions/search";
-import { CommandLoading } from "cmdk";
+import { fts } from "@prisma/client";
 import { Button } from "../ui/Button";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
 const SEARCH_KEYBIND = "k";
 
+const SearchCommandInput = React.forwardRef<
+  React.ElementRef<typeof CommandInput>,
+  React.ComponentPropsWithoutRef<typeof CommandInput>
+>(({ className, ...props }, ref) => {
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathname = usePathname();
+
+  const handleSearch = useDebouncedCallback((fullText: string) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (fullText) {
+      params.set("fullText", fullText);
+    } else {
+      params.delete("fullText");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }, 150);
+  return (
+    <CommandInput
+      ref={ref}
+      onValueChange={handleSearch}
+      defaultValue={searchParams.get("fullText") ?? ""}
+    />
+  );
+});
+
+SearchCommandInput.displayName = CommandInput.displayName;
+
 export default function SearchButton() {
-  const [searchValue, setSearch] = useState("");
+  const router = useRouter();
   const [results, setResults] = useState<fts[]>([]);
-  const [isLoading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const fullText = searchParams.get("fullText") ?? "";
 
   useEffect(() => {
     async function updateResults() {
-      console.log(searchValue);
       try {
-        setLoading(true);
         const newResults: fts[] = await search({
           take: 5,
-          searchString: searchValue ?? "",
+          searchString: fullText ?? "",
         });
 
         setResults(() => newResults);
       } catch {
         toast("Something went wrong!");
       }
-      setLoading(false);
     }
 
-    const delayDebounceFn = setTimeout(() => {
-      updateResults();
-    }, 300);
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchValue]);
+    updateResults();
+  }, [fullText]);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -79,26 +106,32 @@ export default function SearchButton() {
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <Command shouldFilter={false}>
-          <CommandInput
-            placeholder="Type anything to find a Collection"
-            value={searchValue}
-            onValueChange={setSearch}
-          />
+          <SearchCommandInput />
           <CommandList>
-            {isLoading && <CommandLoading />}
-            <CommandEmpty>
-              {`No results found for "${searchValue}"`}.
-            </CommandEmpty>
+            <CommandEmpty>{`No results found for "${fullText}"`}.</CommandEmpty>
             <CommandGroup heading="Search Results">
               {results.map((result, i) => (
-                <CommandItem key={i}>
-                  <Link
-                    href={`/collection/${result.authorslug}/${result.slug}`}
-                  >
-                    {result.title}
-                  </Link>
+                <CommandItem
+                  key={i}
+                  onSelect={() => {
+                    setOpen(false);
+                    router.push(
+                      `/collection/${result.authorslug}/${result.slug}`,
+                    );
+                  }}
+                >
+                  {result.title}
                 </CommandItem>
               ))}
+              <CommandSeparator />
+              <CommandItem
+                onSelect={() => {
+                  setOpen(false);
+                  router.push(`/collection/search?fullText=${fullText}`);
+                }}
+              >
+                View All
+              </CommandItem>
             </CommandGroup>
           </CommandList>
         </Command>

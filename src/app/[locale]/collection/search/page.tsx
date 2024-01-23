@@ -1,15 +1,14 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { unstable_setRequestLocale } from "next-intl/server";
 
-import { Separator } from "@/components/ui/Separator";
-import { CollecionCard2 } from "@/components/Collection/CollectionCard2";
-import Search from "@/shared/serverActions/search";
+import SearchBar from "@/components/Controlls/SearchBar";
+import CollectionSearchResults from "@/components/Collection/CollectionSearchResults";
 
 export const dynamic = "force-dynamic";
 
 export default async function SearchPage({
   params: { locale },
-  searchParams,
+  searchParams: { fullText },
 }: {
   params: { locale: string };
   searchParams: {
@@ -18,32 +17,15 @@ export default async function SearchPage({
 }) {
   unstable_setRequestLocale(locale);
 
-  const collections = await Search({
-    searchString: searchParams.fullText ?? "",
-  });
-
   return (
     <section className="mx-auto w-full max-w-screen-md">
-      <h1 className="p-6 text-3xl">
-        <span className="font-bold">Search Results</span> {collections.length}
-      </h1>
-      <div>
-        <Separator />
-        {collections.map((collection, id) => (
-          <React.Fragment key={id}>
-            <CollecionCard2
-              title={collection.title ?? ""}
-              description={collection.description ?? ""}
-              imageUrl={collection.imgageUrl ?? ""}
-              slug={collection.slug}
-              createdAt={collection.createdAt}
-              authorName={collection.authorname ?? ""}
-              authorSlug={collection.authorslug}
-            />
-            <Separator />
-          </React.Fragment>
-        ))}
+      <div className="space-y-6 p-6">
+        <h1 className="text-3xl font-bold">Search for Collection</h1>
+        <SearchBar />
       </div>
+      <Suspense key={fullText}>
+        <CollectionSearchResults fullText={fullText ?? ""} />
+      </Suspense>
     </section>
   );
 }

@@ -2,12 +2,13 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
-import Link from "next/link";
+import { Link } from "@/shared/navigation";
 
 import { authOptions } from "@/shared/authOptions";
 import ProfileBtn from "@/components/User/ProfileBtn";
 import SignIn from "@/components/User/SignIn";
 import SearchButton from "@/components/Controlls/SearchButton";
+import LocaleButton from "./LocaleButton";
 const DarkModeButton = dynamic(
   () => import("@/components/Controlls/DarkModeButton"),
 );
@@ -61,6 +62,7 @@ export function NavMenu() {
         <SearchButton />
         <AuthButton />
         <DarkModeButton />
+        <LocaleButton />
       </div>
     </div>
   );
