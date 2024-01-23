@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/shared/navigation";
 import {
   Dialog,
   DialogContent,

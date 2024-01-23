@@ -17,8 +17,9 @@ import { toast } from "sonner";
 import search from "@/shared/serverActions/search";
 import { fts } from "@prisma/client";
 import { Button } from "../ui/Button";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import { useRouter } from "next/navigation";
 
 const SEARCH_KEYBIND = "k";
 

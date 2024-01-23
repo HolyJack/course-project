@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import Link from "next/link";
+import { Link } from "@/shared/navigation";
 
 export default function ProfileBtn({
   labels,

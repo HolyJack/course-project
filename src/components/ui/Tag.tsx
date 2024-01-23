@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/shared/navigation";
 import { Badge } from "./Badge";
 
 export default function Tag({ name }: { name: string }) {

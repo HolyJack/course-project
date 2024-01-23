@@ -2,7 +2,7 @@ import prisma from "@/shared/db/db";
 import CollectionCard from "./CollectionCard";
 import { getTranslations } from "next-intl/server";
 import { Button } from "../ui/Button";
-import Link from "next/link";
+import { Link } from "@/shared/navigation";
 
 const AMOUNT = 5;
 
