@@ -8,16 +8,17 @@ export default async function search({
   searchString,
   take,
 }: z.infer<typeof searchSchema>) {
+  console.log(searchString);
   try {
     const collectionsRaw = await prisma.$queryRaw<fts[]>`
       WITH search
       AS (
       SELECT
-      to_tsquery(string_agg(lexeme || ':*', ' & ' order by positions))
+      to_tsquery('english_nostop', string_agg(lexeme || ':*', ' & ' order by positions))
       AS 
       query
       FROM
-      unnest(to_tsvector(${searchString}))
+      unnest(to_tsvector('english_nostop', ${searchString}))
       )
       SELECT title, slug, authorname, authorslug, description, "imgageUrl", "createdAt"
       FROM 
@@ -25,6 +26,7 @@ export default async function search({
       "fts"
       ${searchString ? Prisma.sql`WHERE fts @@ search.query` : Prisma.empty}
       LIMIT ${take}`;
+    console.log(collectionsRaw);
     return collectionsRaw;
   } catch (err) {
     console.log(err);

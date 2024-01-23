@@ -1,9 +1,10 @@
 import { getServerSession } from "next-auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import AddComment from "@/components/Collection/AddComment";
 import { authOptions } from "@/shared/authOptions";
 import { Suspense } from "react";
-import prisma from "@/shared/db/db";
+import { cookies } from "next/headers";
+import { createClient } from "@/shared/utils/supabase/server";
+import RealtimeComments from "./RealtimeComments";
 
 async function AddCommentController({ itemSlug }: { itemSlug: string }) {
   const session = await getServerSession(authOptions);
@@ -11,55 +12,37 @@ async function AddCommentController({ itemSlug }: { itemSlug: string }) {
   return <AddComment itemSlug={itemSlug} />;
 }
 
-function Comment({
-  image,
-  author,
-  createdAt,
-  content,
-}: {
-  image: string;
-  author: string;
-  createdAt: Date;
-  content: string;
-}) {
-  return (
-    <section className="flex gap-3">
-      <div>
-        <Avatar>
-          <AvatarImage src={image} />
-          <AvatarFallback className="capitalize">{author}</AvatarFallback>
-        </Avatar>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="inline gap-2 text-sm">
-          <h3 className="font-bold">{author}</h3>
-          <p className="text-xs text-gray-500">{createdAt.toLocaleString()}</p>
-        </div>
-        <div className="text-lg">{content}</div>
-      </div>
-    </section>
-  );
-}
-
 async function Comments({ itemSlug }: { itemSlug: string }) {
-  const comments = await prisma.comment.findMany({
-    where: { item: { slug: itemSlug } },
-    include: { author: { select: { name: true, image: true } } },
-  });
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const itemId = (
+    await prisma.item.findUnique({
+      where: { slug: itemSlug },
+      select: { id: true },
+    })
+  )?.id;
+  if (!itemId) return null;
+  const res = await supabase
+    .from("Comment")
+    .select("*, User(name, image), Item!inner(id, slug)")
+    .eq("Item.slug", itemSlug)
+    .order("createdAt");
+  const comments = res.data;
+  if (!comments) return;
 
   return (
-    <ul className="space-y-6">
-      {comments.map((comment) => (
-        <li key={comment.id}>
-          <Comment
-            image={comment.author.image ?? ""}
-            author={comment.author.name ?? ""}
-            createdAt={comment.createdAt}
-            content={comment.text}
-          />
-        </li>
-      ))}
-    </ul>
+    <RealtimeComments
+      comments={comments.map((comment) => ({
+        id: comment.id,
+        text: comment.text,
+        createdAt: new Date(comment.createdAt),
+        User: {
+          name: comment.User?.name ?? "",
+          image: comment.User?.image ?? "",
+        },
+      }))}
+      itemId={itemId}
+    />
   );
 }
 
