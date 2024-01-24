@@ -1,11 +1,14 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { AuthOptions } from "next-auth";
-import prisma from "@/shared/db/db";
 import Github from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import slugify from "slugify";
+import { PrismaClient, Role } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export const authOptions: AuthOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     Github({
       clientId: process.env.GITHUB_ID ?? "",
@@ -21,6 +24,7 @@ export const authOptions: AuthOptions = {
           name: profile.name || profile.login,
           email: profile.email,
           image: profile.avatar_url,
+          role: profile.role ?? Role.AUTHOR,
         };
       },
     }),
@@ -34,10 +38,15 @@ export const authOptions: AuthOptions = {
           email: profile.email,
           image: profile.picture,
           slug: slugify(profile.name),
+          role: profile.role ?? Role.AUTHOR,
         };
       },
     }),
   ],
-  //@ts-ignore
-  adapter: PrismaAdapter(prisma),
+  callbacks: {
+    session({ session, user }) {
+      session.user.role = user.role;
+      return session;
+    },
+  },
 };

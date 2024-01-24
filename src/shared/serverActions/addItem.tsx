@@ -16,19 +16,15 @@ const typeToFieldMap = {
 };
 
 export default async function addItemAction(
-  collectionSlug: string,
+  collectionId: number,
   data: z.infer<typeof itemFormSchema>,
 ) {
+  // checking if user is authentificated
   const user = (await getServerSession(authOptions))?.user;
   if (!user || !user.email) return false;
-  const collection = await prisma.collection.findUnique({
-    where: { slug: collectionSlug, author: { email: user.email } },
-    include: { customFields: true },
-  });
-  if (!collection) return false;
 
+  // creating additional tags
   const tags = data.tags.map(({ value }) => value);
-
   await prisma.tag.createMany({
     data: tags.map((name) => ({ name, slug: slugify(name) })),
     skipDuplicates: true,
@@ -37,7 +33,7 @@ export default async function addItemAction(
     where: { name: { in: tags } },
     select: { id: true },
   });
-  //this requires additional validation logic
+
   const date = await prisma.item.create({
     data: {
       name: data.name,
@@ -50,7 +46,7 @@ export default async function addItemAction(
         },
       },
       collection: {
-        connect: { slug: collectionSlug, author: { email: user.email } },
+        connect: { id: collectionId, author: { email: user.email } },
       },
       customFieldValues: {
         createMany: {

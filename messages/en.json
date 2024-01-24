@@ -4,7 +4,14 @@
     },
     "CollectionPage": {
         "description": "Description",
+        "topic": "Topic",
         "items": "Items",
+        "grid": {
+            "name": "Name",
+            "tags": "Tags",
+            "createAt": "Created At",
+            "likes": "Likes"
+        },
         "noItems": "No Items yet",
         "addItem": {
             "title": "Add Item",

@@ -4,8 +4,15 @@
     },
     "CollectionPage": {
         "description": "Описание",
+        "topic": "Тема",
         "items": "Предметы коллекции",
         "noItems": "Предметов пока нет",
+        "grid": {
+            "name": "Название",
+            "tags": "Теги",
+            "createAt": "Создан",
+            "likes": "Нравится"
+        },
         "addItem": {
             "title": "Добавить новый предмет",
             "form": {
