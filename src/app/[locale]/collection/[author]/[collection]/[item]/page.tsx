@@ -82,7 +82,7 @@ export default async function CollectionItemPage({
           ))}
         </div>
         <Separator />
-        <CommentSection itemSlug={params.item} />
+        <CommentSection itemId={item.id} />
       </CardContent>
     </Card>
   );

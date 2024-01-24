@@ -16,10 +16,5 @@ export default async function getComment({
 
   if (!comment) throw new Error("No such comment");
 
-  return {
-    id: comment.id,
-    text: comment?.text,
-    createdAt: comment.createdAt,
-    User: { name: comment.author.name, image: comment.author.image },
-  };
+  return comment;
 }

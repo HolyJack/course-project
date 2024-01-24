@@ -26,7 +26,6 @@ export default async function search({
       "fts"
       ${searchString ? Prisma.sql`WHERE fts @@ search.query` : Prisma.empty}
       LIMIT ${take}`;
-    console.log(collectionsRaw);
     return collectionsRaw;
   } catch (err) {
     console.log(err);

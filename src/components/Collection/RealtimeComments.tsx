@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import { supabase } from "@/shared/utils/supabase/client";
 import getComment from "@/shared/serverActions/getComment";
+import { Comment } from "@prisma/client";
 
 function CommentCard({
   image,
@@ -35,22 +36,12 @@ function CommentCard({
   );
 }
 
-type comment = {
-  id: string;
-  text: string;
-  createdAt: Date;
-  User: {
-    name: string;
-    image: string;
-  };
-};
-
 export default function RealtimeComments({
   itemId,
   comments: initialComments,
 }: {
   itemId: number;
-  comments: comment[];
+  comments: (Comment & { author: { name?: string; image?: string } })[];
 }) {
   const [comments, setComments] = useState(initialComments);
   useEffect(() => {
@@ -70,7 +61,13 @@ export default function RealtimeComments({
               itemId,
               commentId: payload.new.id,
             });
-            setComments((prev) => prev.concat([newComment as comment]));
+            setComments((prev) =>
+              prev.concat([
+                newComment as Comment & {
+                  author: { name?: string; image?: string };
+                },
+              ]),
+            );
           }
         },
       )
@@ -84,8 +81,8 @@ export default function RealtimeComments({
       {comments.map((comment) => (
         <li key={comment.id}>
           <CommentCard
-            image={comment.User?.image ?? ""}
-            author={comment.User?.name ?? ""}
+            image={comment.author.image ?? ""}
+            author={comment.author.name ?? ""}
             createdAt={comment.createdAt}
             content={comment.text}
           />

@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/TextArea";
 
 const formSchema = z.object({ message: z.string().min(1).max(250) });
 
-export default function AddComment({ itemSlug }: { itemSlug: string }) {
+export default function AddComment({ itemId }: { itemId: number }) {
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,10 +31,11 @@ export default function AddComment({ itemSlug }: { itemSlug: string }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
-      const res = await addComment({ itemSlug, text: values.message });
+      const res = await addComment({ itemId, text: values.message });
       toast("Success", {
         description: (res.createdAt as Date).toLocaleString(),
       });
+      form.reset();
     } catch {
       toast("Failure");
     }
