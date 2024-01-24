@@ -3,13 +3,13 @@ import AddItem from "./AddItem";
 import ItemsGrid from "./ItemsGrid";
 
 export default async function CollectionItems({
-  collectioSlug,
-  collectionAuthor,
+  collectionSlug,
+  authorSlug,
   editAccess,
   collectionId,
 }: {
-  collectioSlug: string;
-  collectionAuthor: string;
+  collectionSlug: string;
+  authorSlug: string;
   editAccess: boolean;
   collectionId: number;
 }) {
@@ -23,6 +23,9 @@ export default async function CollectionItems({
     })
   ).map((item) => ({
     name: item.name,
+    slug: item.slug,
+    collectionSlug,
+    authorSlug,
     tags: item.tags.map((tag) => tag.tag.name),
     likes: item._count.likes,
     createdAt: item.createdAt,

@@ -7,14 +7,38 @@ import { useState } from "react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { Badge } from "../ui/Badge";
+import { Link, usePathname } from "@/shared/navigation";
 
 function CustomTagsRender(props: CustomCellRendererProps) {
   return (
     <div className="flex h-full flex-wrap items-center gap-1 py-2">
       {props.value.map((v: string) => (
-        <Badge key={v}>{v}</Badge>
+        <Link key={v} href={`/collection/search?fullText=${v}`}>
+          <Badge>{v}</Badge>
+        </Link>
       ))}
     </div>
+  );
+}
+
+type Item = {
+  name: string;
+  slug: string;
+  collectionSlug: string;
+  authorSlug: string;
+  likes: number;
+  tags: string[];
+  createdAt: Date;
+};
+
+function CustomNameRender(props: CustomCellRendererProps<Item>) {
+  return (
+    <Link
+      href={`/collection/${props.data?.authorSlug}/${props.data?.collectionSlug}/${props.data?.slug}`}
+      className="hover:text-primary"
+    >
+      {props.value}
+    </Link>
   );
 }
 
@@ -23,7 +47,7 @@ export default function ItemsGrid({
   items,
 }: {
   labels: { name: string; tags: string; likes: string; createAt: string };
-  items: { name: string; likes: number; tags: string[]; createdAt: Date }[];
+  items: Item[];
 }) {
   const [colDef] = useState<ColDef[]>([
     {
@@ -32,6 +56,7 @@ export default function ItemsGrid({
       sort: "asc",
       minWidth: 100,
       flex: 1,
+      cellRenderer: CustomNameRender,
     },
     {
       field: "tags",
@@ -45,7 +70,7 @@ export default function ItemsGrid({
     {
       field: "likes",
       headerName: labels.likes,
-      width: 70,
+      width: 130,
     },
     {
       field: "createdAt",
@@ -56,12 +81,13 @@ export default function ItemsGrid({
 
   return (
     <div className="ag-theme-quartz w-full">
-      <AgGridReact
+      <AgGridReact<Item>
         columnDefs={colDef}
         rowData={items}
         domLayout="autoHeight"
         enableCellTextSelection={true}
         ensureDomOrder={true}
+        suppressCellFocus={true}
       />
 
       <style jsx global>{`

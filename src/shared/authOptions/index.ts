@@ -3,11 +3,11 @@ import { AuthOptions } from "next-auth";
 import Github from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import slugify from "slugify";
-import { PrismaClient, Role } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Role } from "@prisma/client";
+import prisma from "../db/db";
 
 export const authOptions: AuthOptions = {
+  //@ts-ignore
   adapter: PrismaAdapter(prisma),
   providers: [
     Github({

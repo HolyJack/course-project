@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getTranslations } from "next-intl/server";
 import CollectionItems from "./CollectionItems";
 import { Suspense } from "react";
-import { CollectionWithAuthorAndTopic } from "@/app/[locale]/collection/[author]/[collection]/page";
+import { CollectionWithAuthorAndTopic } from "@/shared/utils/types";
 
 export default async function Collection({
   editAccess,
@@ -39,8 +39,8 @@ export default async function Collection({
         </section>
         <Suspense>
           <CollectionItems
-            collectionAuthor={collection.author.slug ?? ""}
-            collectioSlug={collection.slug}
+            authorSlug={collection.author.slug ?? ""}
+            collectionSlug={collection.slug}
             editAccess={editAccess}
             collectionId={collection.id}
           />

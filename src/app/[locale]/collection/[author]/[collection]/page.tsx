@@ -5,21 +5,10 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/shared/authOptions";
 import Collection from "@/components/Collection/Collection";
 import { Suspense } from "react";
-import { Prisma, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
+import { collectionWithAuthorAndTopic } from "@/shared/utils/types";
 
 export const revalidate = 0;
-
-const collectionWithAuthorAndTopic =
-  Prisma.validator<Prisma.CollectionDefaultArgs>()({
-    include: {
-      author: { select: { name: true, slug: true, email: true } },
-      topic: { select: { name: true } },
-    },
-  });
-
-export type CollectionWithAuthorAndTopic = Prisma.CollectionGetPayload<
-  typeof collectionWithAuthorAndTopic
->;
 
 export default async function CollectionPage({
   params,

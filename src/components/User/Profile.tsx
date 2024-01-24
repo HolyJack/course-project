@@ -1,36 +1,20 @@
-import { User } from "next-auth";
 import prisma from "@/shared/db/db";
+import CollectionsGrid from "../Collection/CollectionsGrid";
+import { collectionWithAuthorAndTopic } from "@/shared/utils/types";
 
-export default async function Profile({ user }: { user: User }) {
+export default async function MyCollections({ email }: { email: string }) {
   const collections = await prisma.collection.findMany({
-    where: { author: { email: user.email } },
-    select: {
-      title: true,
-      imgageUrl: true,
-      topic: true,
-      items: {
-        select: {
-          name: true,
-          customFieldValues: {
-            select: {
-              intValue: true,
-              booleanValue: true,
-              dateValue: true,
-              stringValue: true,
-              textValue: true,
-              customField: { select: { type: true, state: true, value: true } },
-            },
-          },
-          tags: { select: { tag: { select: { name: true } } } },
-        },
-      },
-    },
+    where: { author: { email } },
+    include: collectionWithAuthorAndTopic.include,
   });
 
-  return (
-    <div>
-      <div>{`Hey ${user.name}`}</div>
-      <div>{collections.length && collections[0].title}</div>
-    </div>
-  );
+  if (collections.length === 0) return null;
+
+  const collectionsFlatten = collections.map((collection) => ({
+    ...collection,
+    topic: collection.topic.name,
+  }));
+
+  console.log(collectionsFlatten);
+  return <CollectionsGrid collections={collectionsFlatten} />;
 }
