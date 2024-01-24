@@ -20,8 +20,12 @@ import { Button } from "../ui/Button";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "next/navigation";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 const SEARCH_KEYBIND = "k";
+const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+let CMD = "ALT +";
+if (isMac) CMD = "⌘";
 
 const SearchCommandInput = React.forwardRef<
   React.ElementRef<typeof CommandInput>,
@@ -93,15 +97,18 @@ export default function SearchButton() {
       <Button
         onClick={() => setOpen(true)}
         variant="outline"
-        className=" bg-shadow group inline-flex justify-between px-4 py-0 text-xs md:w-40 lg:w-64"
+        className=" bg-shadow group inline-flex justify-between px-2 py-0 text-xs md:w-40 lg:w-64"
       >
-        <span className="hidden lg:inline-block">Search for Collection</span>
-        <span className="hidden md:inline-block lg:hidden">Search...</span>
+        <span className="inline-flex gap-2">
+          <MagnifyingGlassIcon />
+          <span className="hidden lg:inline-block">Search for Collection</span>
+          <span className="hidden md:inline-block lg:hidden">Search...</span>
+        </span>
         <kbd
           className="border-shadow bg-background pointer-events-none
-          inline-flex rounded border px-2 py-1 capitalize"
+          hidden rounded border px-2 py-1 capitalize sm:inline-flex"
         >
-          {"⌘"}
+          {CMD}
           {SEARCH_KEYBIND}
         </kbd>
       </Button>

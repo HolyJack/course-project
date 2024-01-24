@@ -27,21 +27,28 @@ export default async function addItemAction(
   });
   if (!collection) return false;
 
-  const tags = data.tags.map(({ value }) => ({
-    name: value,
-    slug: slugify(value),
-  }));
-  const connectTags = data.tags.map(({ value }) => ({
-    tag: { connect: { name: value, slug: slugify(value) } },
-  }));
+  const tags = data.tags.map(({ value }) => value);
 
-  await prisma.tag.createMany({ data: tags, skipDuplicates: true });
+  await prisma.tag.createMany({
+    data: tags.map((name) => ({ name, slug: slugify(name) })),
+    skipDuplicates: true,
+  });
+  const tagsIds = await prisma.tag.findMany({
+    where: { name: { in: tags } },
+    select: { id: true },
+  });
   //this requires additional validation logic
   const date = await prisma.item.create({
     data: {
       name: data.name,
       slug: slugify(data.name),
-      tags: { create: connectTags },
+      tags: {
+        createMany: {
+          data: tagsIds.map(({ id }) => ({
+            tagId: id,
+          })),
+        },
+      },
       collection: {
         connect: { slug: collectionSlug, author: { email: user.email } },
       },

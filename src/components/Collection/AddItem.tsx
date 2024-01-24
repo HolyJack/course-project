@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import { UseFormReturn, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/Command";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { cn } from "@/shared/utils";
+import { useCommandState } from "cmdk";
 
 const defaultCustomFieldsValues: Record<CustomFieldTypes, any> = {
   INT: 0,
@@ -65,6 +66,25 @@ function TagsInput({
 }) {
   const [tag, setTag] = useState("");
   const [open, setOpen] = useState(false);
+  const [tagsToSelect, setTagsToSelect] = useState(defaultTags);
+
+  function CommandEmptyAddNew() {
+    const isEmpty = useCommandState((state) => state.filtered.count) === 0;
+    if (!isEmpty) return null;
+    return (
+      <div className="p-1">
+        <Button
+          onClick={() => {
+            appendTag({ value: tag });
+            setTagsToSelect((prev) => prev.concat([tag]));
+          }}
+          className="bg-accent hover:bg-accent/50 w-full"
+        >
+          {`${addTag} "${tag}"`}
+        </Button>
+      </div>
+    );
+  }
 
   const {
     fields: tags,
@@ -106,11 +126,9 @@ function TagsInput({
         <PopoverContent className="p-0">
           <Command>
             <CommandInput value={tag} onValueChange={setTag} />
-            <CommandEmpty onSelect={() => appendTag({ value: tag })}>
-              {`${addTag} "${tag}"`}
-            </CommandEmpty>
+            <CommandEmptyAddNew />
             <CommandGroup>
-              {defaultTags.map((tag) => (
+              {tagsToSelect.map((tag) => (
                 <CommandItem
                   key={tag}
                   value={tag}
