@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import AddItem from "./AddItem";
 import ItemsGrid from "./ItemsGrid";
+import prisma from "@/shared/db/db";
 
 export default async function CollectionItems({
   collectionSlug,
