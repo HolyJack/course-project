@@ -32,7 +32,7 @@ export default async function BiggestCollections() {
             author: { name: author, slug: authorSlug },
             imgageUrl,
             id,
-            topic: { name: topic },
+            topic,
           }) => (
             <CollectionCard
               key={id}
@@ -40,7 +40,7 @@ export default async function BiggestCollections() {
               collectionSlug={collectionSlug ?? ""}
               author={author ?? ""}
               authorSlug={authorSlug ?? ""}
-              topic={topic}
+              topic={topic?.name ?? ""}
               imageUrl={imgageUrl ?? ""}
             />
           ),

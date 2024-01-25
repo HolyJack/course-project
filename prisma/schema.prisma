@@ -72,7 +72,7 @@ model Collection {
   body         String?
   fts          Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, ((title || ' '::text) || description))"))
   author       User                     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  topic        Topic                    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  topic        Topic                    @relation(fields: [topicId], references: [id])
   customFields CustomField[]
   items        Item[]
 
@@ -137,8 +137,8 @@ model TagsOnItems {
   tagId     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  item      Item     @relation(fields: [itemId], references: [id])
-  tag       Tag      @relation(fields: [tagId], references: [id])
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([itemId, tagId])
 }
@@ -157,8 +157,8 @@ model Like {
   userId String
   itemId Int
   like   Boolean @default(false)
-  item   Item    @relation(fields: [itemId], references: [id])
-  user   User    @relation(fields: [userId], references: [id])
+  item   Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, itemId])
 }
@@ -172,8 +172,8 @@ model Comment {
   text      String
   updatedAt DateTime                 @updatedAt
   fts       Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, text)"))
-  author    User                     @relation(fields: [authorId], references: [id])
-  item      Item                     @relation(fields: [itemId], references: [id])
+  author    User?                     @relation(fields: [authorId], references: [id])
+  item      Item                     @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 
 view item_fts {
