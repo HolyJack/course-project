@@ -9,8 +9,10 @@ export default async function CollectionPage({
   params: { author: string; collection: string };
 }) {
   return (
-    <Suspense>
-      <Collection slug={params.collection} authorSlug={params.author} />
-    </Suspense>
+    <div className="mx-auto w-full max-w-screen-md">
+      <Suspense>
+        <Collection slug={params.collection} authorSlug={params.author} />
+      </Suspense>
+    </div>
   );
 }

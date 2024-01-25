@@ -31,7 +31,7 @@ export default async function Collection({
     false;
   const t = await getTranslations("CollectionPage");
   return (
-    <section className="mx-auto w-full max-w-screen-md border-none shadow-none">
+    <section className="space-y-6">
       <h1 className="text-center text-4xl font-bold capitalize">
         {collection.title}
       </h1>
