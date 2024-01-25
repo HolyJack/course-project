@@ -48,7 +48,6 @@ export default async function Collection({
 
       <section className="space-y-4">
         <h2 className="text-2xl font-bold capitalize">{t("description")}</h2>
-        <RichText content={collection.description} />
       </section>
       <Suspense>
         <CollectionItems
