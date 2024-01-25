@@ -3,16 +3,33 @@ import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { getTranslations } from "next-intl/server";
 import CollectionItems from "./CollectionItems";
 import { Suspense } from "react";
-import { CollectionWithAuthorAndTopic } from "@/shared/utils/types";
 import RichText from "../ui/RichText";
+import prisma from "@/shared/db/db";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+
+import { Role } from "@prisma/client";
+import { collectionWithAuthorAndTopic } from "@/shared/utils/types";
+import { authOptions } from "@/shared/authOptions";
 
 export default async function Collection({
-  editAccess,
-  collection,
+  slug,
+  authorSlug,
 }: {
-  editAccess: boolean;
-  collection: CollectionWithAuthorAndTopic;
+  slug: string;
+  authorSlug: string;
 }) {
+  const collection = await prisma.collection.findUnique({
+    where: { slug, author: { slug: authorSlug } },
+    include: collectionWithAuthorAndTopic.include,
+  });
+  if (!collection) return redirect("/");
+  const user = (await getServerSession(authOptions))?.user;
+  const editAccess =
+    (user &&
+      (user.email === collection.author.email || user.role === Role.ADMIN)) ??
+    false;
+
   const t = await getTranslations("CollectionPage");
   return (
     <Card className="mx-auto w-full max-w-screen-md border-none shadow-none">
@@ -21,7 +38,7 @@ export default async function Collection({
           {collection.title}
         </h1>
         <Image
-          className="border-shadow shadow-shadow h-auto w-full overflow-hidden rounded-md border shadow"
+          className="h-auto w-full overflow-hidden rounded-md border border-shadow shadow shadow-shadow"
           src={collection.imgageUrl ?? ""}
           width={1000}
           height={1000}
