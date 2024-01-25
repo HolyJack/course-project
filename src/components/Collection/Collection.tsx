@@ -1,9 +1,10 @@
+import prisma from "@/shared/db/db";
+
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import CollectionItems from "./CollectionItems";
 import { Suspense } from "react";
+import CollectionItems from "./CollectionItems";
 import RichText from "../ui/RichText";
-import prisma from "@/shared/db/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -48,6 +49,7 @@ export default async function Collection({
 
       <section className="space-y-4">
         <h2 className="text-2xl font-bold capitalize">{t("description")}</h2>
+        <RichText content={collection.description} />
       </section>
       <Suspense>
         <CollectionItems

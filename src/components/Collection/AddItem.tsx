@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/Dialog";
 import AddItemForm from "./AddItemForm";
 import { getTranslations } from "next-intl/server";
+import prisma from "@/shared/db/db";
 
 export default async function AddItem({
   collectionId,
@@ -33,7 +34,7 @@ export default async function AddItem({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="hover:text-primary text-2xl font-bold">+</button>
+        <button className="text-2xl font-bold hover:text-primary">+</button>
       </DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-auto">
         <DialogTitle className="text-2xl font-bold">{t("title")}</DialogTitle>
