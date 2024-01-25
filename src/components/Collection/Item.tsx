@@ -4,6 +4,8 @@ import Tag from "../ui/Tag";
 import NavigateBack from "../Controlls/NavigateBack";
 import { Separator } from "../ui/Separator";
 import CommentSection from "./CommentSection";
+import { getTranslations } from "next-intl/server";
+import prisma from "@/shared/db/db";
 
 export default async function Item({
   slug,
@@ -14,6 +16,7 @@ export default async function Item({
   authorSlug: string;
   collectionSlug: string;
 }) {
+  const t = await getTranslations("ItemPage");
   const item = await prisma.item.findUnique({
     where: {
       slug,
@@ -34,7 +37,7 @@ export default async function Item({
   return (
     <section className="space-y-6">
       <div className="relative flex items-center justify-center">
-        <NavigateBack className="hover:text-primary absolute left-0">
+        <NavigateBack className="absolute left-0 hover:text-primary">
           <ChevronLeft />
         </NavigateBack>
         <h1 className="text-center text-4xl font-bold">{item?.name}</h1>
