@@ -19,7 +19,7 @@ export default function ProfileBtn({
   email,
   img,
 }: {
-  labels: { signout: string; profile: string; newCollection: string };
+  labels: { signout: string; viewCollections: string; newCollection: string };
   username: string;
   email: string;
   img: string;
@@ -40,7 +40,7 @@ export default function ProfileBtn({
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <Link className="h-full w-full" href={"/collection/my-collections"}>
-              {labels.profile}
+              {labels.viewCollections}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>

@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import CollectionItems from "./CollectionItems";
 import { Suspense } from "react";
 import { CollectionWithAuthorAndTopic } from "@/shared/utils/types";
+import RichText from "../ui/RichText";
 
 export default async function Collection({
   editAccess,
@@ -35,7 +36,7 @@ export default async function Collection({
 
         <section className="space-y-4">
           <h2 className="text-2xl font-bold capitalize">{t("description")}</h2>
-          <p>{collection.description}</p>
+          <RichText content={collection.description} />
         </section>
         <Suspense>
           <CollectionItems

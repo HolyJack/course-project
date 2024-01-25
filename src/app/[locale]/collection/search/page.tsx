@@ -1,30 +1,22 @@
 import React, { Suspense } from "react";
-import { unstable_setRequestLocale } from "next-intl/server";
 
 import SearchBar from "@/components/Controlls/SearchBar";
-import CollectionSearchResults from "@/components/Collection/CollectionSearchResults";
+import SearchResults from "@/components/Collection/SearchResults";
 
-export const dynamic = "force-dynamic";
-
+export const revalidate = 0;
 export default async function SearchPage({
-  params: { locale },
   searchParams: { fullText },
 }: {
-  params: { locale: string };
   searchParams: {
     fullText?: string;
   };
 }) {
-  unstable_setRequestLocale(locale);
-
   return (
-    <section className="mx-auto w-full max-w-screen-md">
-      <div className="space-y-6 p-6">
-        <h1 className="text-3xl font-bold">Search for Collection</h1>
-        <SearchBar />
-      </div>
+    <section className="mx-auto w-full max-w-screen-md space-y-6 py-6">
+      <h1 className="text-3xl font-bold">Search for Items</h1>
+      <SearchBar />
       <Suspense key={fullText}>
-        <CollectionSearchResults fullText={fullText ?? ""} />
+        <SearchResults fullText={fullText ?? ""} />
       </Suspense>
     </section>
   );

@@ -55,15 +55,29 @@
         }
     },
     "BiggestCollections" : {
-        "title": "Biggest Collections"
+        "title": "Biggest Collections",
+        "viewAll": "View All"
     },
-    "RecentCollections" : {
-        "title": "Recent Collections"
+    "RecentItems" : {
+        "title": "Recently added Items to Collections",
+        "addedTo": "added to",
+        "by": "by",
+        "at": "at"
+    },
+
+    "MyCollectionsPage": {
+        "title": "My Collections",
+        "grid": {
+            "name":"Title",
+            "description":"Description",
+            "topic":"Topic",
+            "createdAt":"Created At"
+        }
     },
     "AuthButton": {
         "signin": "Sign In",
         "signout": "Sign Out",
         "newCollection": "Create Collection",
-        "profile": "Profile"
+        "viewCollections": "My Collections"
     }
 }

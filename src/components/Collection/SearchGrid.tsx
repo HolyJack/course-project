@@ -6,35 +6,13 @@ import { useState } from "react";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { Badge } from "../ui/Badge";
 import { Link } from "@/shared/navigation";
+import { item_fts } from "@prisma/client";
 
-function CustomTagsRender(props: CustomCellRendererProps) {
-  return (
-    <div className="flex h-full flex-wrap items-center gap-1 py-2">
-      {props.value.map((v: string) => (
-        <Link key={v} href={`/collection/search?fullText=${v}`}>
-          <Badge>{v}</Badge>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
-type Item = {
-  name: string;
-  slug: string;
-  collectionSlug: string;
-  authorSlug: string;
-  likes: number;
-  tags: string[];
-  createdAt: Date;
-};
-
-function CustomNameRender(props: CustomCellRendererProps<Item>) {
+function CustomNameRender(props: CustomCellRendererProps<item_fts>) {
   return (
     <Link
-      href={`/collection/${props.data?.authorSlug}/${props.data?.collectionSlug}/${props.data?.slug}`}
+      href={`/collection/${props.data?.authorslug}/${props.data?.collectionslug}/${props.data?.slug}`}
       className="hover:text-primary"
     >
       {props.value}
@@ -42,46 +20,30 @@ function CustomNameRender(props: CustomCellRendererProps<Item>) {
   );
 }
 
-export default function ItemsGrid({
-  labels,
-  items,
-}: {
-  labels: { name: string; tags: string; likes: string; createAt: string };
-  items: Item[];
-}) {
+export default function SearchGrid({ items }: { items: item_fts[] }) {
   const [colDef] = useState<ColDef[]>([
     {
       field: "name",
-      headerName: labels.name,
-      sort: "asc",
-      minWidth: 100,
-      flex: 1,
       cellRenderer: CustomNameRender,
     },
     {
-      field: "tags",
-      headerName: labels.tags,
-      cellRenderer: CustomTagsRender,
-      autoHeight: true,
-      wrapText: true,
-      minWidth: 50,
+      field: "author",
       flex: 1,
     },
     {
-      field: "likes",
-      headerName: labels.likes,
-      width: 130,
+      field: "title",
+      headerName: "Collection",
+      flex: 1,
     },
     {
       field: "createdAt",
-      headerName: labels.createAt,
       width: 120,
     },
   ]);
 
   return (
     <div className="ag-theme-quartz w-full">
-      <AgGridReact<Item>
+      <AgGridReact<item_fts>
         columnDefs={colDef}
         rowData={items}
         domLayout="autoHeight"

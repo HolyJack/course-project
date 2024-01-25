@@ -2,10 +2,18 @@ import { CustomFieldTypes } from "@prisma/client";
 import { z } from "zod";
 
 const dataSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
-  }),
-  description: z.string().optional(),
+  title: z
+    .string()
+    .min(2, {
+      message: "Title must be at least 2 characters.",
+    })
+    .max(100, { message: "Title is too long. Max length: 100" }),
+  description: z
+    .string()
+    .min(5, { message: "Too short. Min length: 5" })
+    .max(400, { message: "Its too long! Max length: 400" })
+    .trim()
+    .optional(),
   topic: z.string(),
   customFields: z
     .array(

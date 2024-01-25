@@ -1,7 +1,7 @@
 "use server";
 import { z } from "zod";
 import prisma from "../db/db";
-import { Prisma, fts } from "@prisma/client";
+import { Prisma, item_fts } from "@prisma/client";
 import { searchSchema } from "./schemas";
 
 export default async function search({
@@ -10,23 +10,28 @@ export default async function search({
 }: z.infer<typeof searchSchema>) {
   console.log(searchString);
   try {
-    const collectionsRaw = await prisma.$queryRaw<fts[]>`
-      WITH search
-      AS (
-      SELECT
-      to_tsquery('english_nostop', string_agg(lexeme || ':*', ' & ' order by positions))
-      AS 
-      query
-      FROM
-      unnest(to_tsvector('english_nostop', ${searchString}))
-      )
-      SELECT title, slug, authorname, authorslug, description, "imgageUrl", "createdAt"
+    const proccessedSearch = searchString
+      ? searchString
+          .split(" ")
+          .map((word) => `${word}:*`)
+          .join(" ")
+      : "";
+    const items = await prisma.$queryRaw<item_fts[]>`
+      SELECT name, title, author, slug, collectionslug, authorslug, "createdAt"
       FROM 
-      search,
-      "fts"
-      ${searchString ? Prisma.sql`WHERE fts @@ search.query` : Prisma.empty}
-      LIMIT ${take}`;
-    return collectionsRaw;
+      "item_fts"
+      ${
+        proccessedSearch
+          ? Prisma.sql`WHERE fts @@ websearch_to_tsquery('multi_lang', ${proccessedSearch})`
+          : Prisma.empty
+      }
+    ${
+      proccessedSearch
+        ? Prisma.sql`ORDER BY ts_rank(fts, websearch_to_tsquery('multi_lang', ${proccessedSearch}))`
+        : Prisma.empty
+    }
+      ${take ? Prisma.sql`LIMIT ${take}` : Prisma.empty}`;
+    return items;
   } catch (err) {
     console.log(err);
     throw new Error("Something went wrong");

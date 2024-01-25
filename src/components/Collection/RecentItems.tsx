@@ -1,5 +1,6 @@
 import prisma from "@/shared/db/db";
 import { Link } from "@/shared/navigation";
+import { getTranslations } from "next-intl/server";
 
 const AMOUNT = 5;
 
@@ -13,10 +14,11 @@ export default async function RecentItems() {
     },
     orderBy: { createdAt: "desc" },
   });
+  const t = await getTranslations("RecentItems");
 
   return (
     <section className="space-y-4">
-      <h2 className="text-3xl">Recently Added Items</h2>
+      <h2 className="text-3xl">{t("title")}</h2>
       <div className="flex flex-col gap-2 text-sm">
         {items.map((item) => (
           <div key={item.slug} className="inline-flex">
@@ -27,21 +29,21 @@ export default async function RecentItems() {
               >
                 {item.name}
               </Link>{" "}
-              added to{" "}
+              {t("addedTo")}{" "}
               <Link
                 href={`/collection/${item.collection.author.slug}/${item.collection.slug}`}
                 className="hover:text-primary font-bold text-gray-400"
               >
                 {item.collection.title}
               </Link>{" "}
-              by{" "}
+              {t("by")}{" "}
               <Link
                 href={`/collection/search?fullText=${item.collection.author.name}`}
                 className="hover:text-primary font-bold text-gray-400"
               >
                 {item.collection.author.name ?? "unknown"}
               </Link>{" "}
-              at {item.createdAt.toLocaleString()}
+              {t("at")} {item.createdAt.toLocaleString()}
             </p>
           </div>
         ))}

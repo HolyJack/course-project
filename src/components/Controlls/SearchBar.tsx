@@ -1,6 +1,5 @@
 "use client";
 
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Input } from "../ui/Input";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
@@ -25,7 +24,7 @@ export default function SearchBar() {
     <Input
       onChange={(e) => handleSearch(e.target.value)}
       defaultValue={searchParams.get("fullText")?.toString()}
-      placeholder="Type any text related to the collection"
-    ></Input>
+      placeholder="Find Items"
+    />
   );
 }

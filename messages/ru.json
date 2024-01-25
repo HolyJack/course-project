@@ -55,15 +55,28 @@
         }
     },
     "BiggestCollections" : {
-        "title": "Самые большие Коллекции"
+        "title": "Самые большие Коллекции",
+        "viewAll": "Посмотреть Все"
     },
-    "RecentCollections" : {
-        "title": "Новые Коллекции"
+    "RecentItems" : {
+        "title": "Недавно добавленные предметы Коллекций",
+        "addedTo": "добавлен в",
+        "by": "автор",
+        "at": "в"
+    },
+    "MyCollectionsPage": {
+        "title": "Мои Коллекции",
+        "grid": {
+            "name":"Название",
+            "description":"Описание",
+            "topic":"Тема",
+            "createdAt":"Создано"
+        }
     },
     "AuthButton": {
         "signin": "Войти",
         "signout": "Выйти",
         "newCollection": "Добавить Коллекцию",
-        "profile": "Профиль"
+        "viewCollections": "Мои Kоллекции"
     }
 }

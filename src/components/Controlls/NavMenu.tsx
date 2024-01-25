@@ -36,9 +36,9 @@ async function AuthButton() {
     return (
       <ProfileBtn
         labels={{
+          viewCollections: t("viewCollections"),
           newCollection: t("newCollection"),
           signout: t("signout"),
-          profile: t("profile"),
         }}
         username={session.user.name ?? ""}
         email={session.user.email ?? ""}

@@ -8,6 +8,7 @@ const AMOUNT = 5;
 
 export default async function BiggestCollections() {
   const t = await getTranslations("BiggestCollections");
+
   const collections = await prisma.collection.findMany({
     take: AMOUNT,
     orderBy: { items: { _count: "desc" } },
@@ -52,7 +53,7 @@ export default async function BiggestCollections() {
             href="/collection/search"
             className="bg-shadow/50 flex h-full w-full items-center justify-center"
           >
-            View All
+            {t("viewAll")}
           </Link>
         </Button>
       </div>

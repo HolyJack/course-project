@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import React, { useEffect, useState } from "react";
 import {
   Command,
@@ -15,12 +13,12 @@ import {
 } from "../ui/Command";
 import { toast } from "sonner";
 import search from "@/shared/serverActions/search";
-import { fts } from "@prisma/client";
 import { Button } from "../ui/Button";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { item_fts } from "@prisma/client";
 
 const SEARCH_KEYBIND = "k";
 const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
@@ -44,7 +42,7 @@ const SearchCommandInput = React.forwardRef<
       params.delete("fullText");
     }
     replace(`${pathname}?${params.toString()}`);
-  }, 150);
+  }, 50);
   return (
     <CommandInput
       ref={ref}
@@ -58,7 +56,7 @@ SearchCommandInput.displayName = CommandInput.displayName;
 
 export default function SearchButton() {
   const router = useRouter();
-  const [results, setResults] = useState<fts[]>([]);
+  const [results, setResults] = useState<item_fts[]>([]);
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const fullText = searchParams.get("fullText") ?? "";
@@ -66,7 +64,7 @@ export default function SearchButton() {
   useEffect(() => {
     async function updateResults() {
       try {
-        const newResults: fts[] = await search({
+        const newResults: item_fts[] = await search({
           take: 5,
           searchString: fullText ?? "",
         });
@@ -101,7 +99,7 @@ export default function SearchButton() {
       >
         <span className="inline-flex gap-2">
           <MagnifyingGlassIcon />
-          <span className="hidden lg:inline-block">Search for Collection</span>
+          <span className="hidden lg:inline-block">Search for Items</span>
           <span className="hidden md:inline-block lg:hidden">Search...</span>
         </span>
         <kbd
@@ -113,26 +111,28 @@ export default function SearchButton() {
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <Command shouldFilter={false}>
+        <Command shouldFilter={false} aria-sort="none">
           <SearchCommandInput />
           <CommandList>
             <CommandEmpty>{`No results found for "${fullText}"`}.</CommandEmpty>
-            <CommandGroup heading="Search Results">
-              {results.map((result, i) => (
+            <CommandGroup heading="Items found:">
+              {results.map((result) => (
                 <CommandItem
-                  key={i}
+                  key={result.id}
+                  value={`${result.name} ${result.author} ${result.title}`}
                   onSelect={() => {
                     setOpen(false);
                     router.push(
-                      `/collection/${result.authorslug}/${result.slug}`,
+                      `/collection/${result.authorslug}/${result.collectionslug}/${result.slug}`,
                     );
                   }}
                 >
-                  {result.title}
+                  {result.name}
                 </CommandItem>
               ))}
               <CommandSeparator />
               <CommandItem
+                value="View All"
                 onSelect={() => {
                   setOpen(false);
                   router.push(`/collection/search?fullText=${fullText}`);
