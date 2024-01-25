@@ -4,7 +4,7 @@ import { Input } from "../ui/Input";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 
-export default function SearchBar() {
+export default function SearchBar({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
@@ -24,7 +24,7 @@ export default function SearchBar() {
     <Input
       onChange={(e) => handleSearch(e.target.value)}
       defaultValue={searchParams.get("fullText")?.toString()}
-      placeholder="Find Items"
+      placeholder={placeholder}
     />
   );
 }

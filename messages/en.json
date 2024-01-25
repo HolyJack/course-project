@@ -18,6 +18,7 @@
             "form": {
                 "name": "Name",
                 "tags": "Tags",
+                "selectTags": "Select Tags",
                 "addTag": "Add Tag",
                 "submit": "Submit",
                 "toast": { 
@@ -54,6 +55,17 @@
                 "failure": "Something went wrong" }
         }
     },
+    "SearchPage" : {
+        "title": "Search Result",
+        "placeholder": "Fint Items",
+        "itemsFound": "Items Found",
+        "grid": {
+            "name":"Name",
+            "author":"Author",
+            "collections":"Collection",
+            "createdAt":"Created At"
+        }
+    },
     "BiggestCollections" : {
         "title": "Biggest Collections",
         "viewAll": "View All"
@@ -72,6 +84,14 @@
             "description":"Description",
             "topic":"Topic",
             "createdAt":"Created At"
+        }
+    },
+    "SearchButton": {
+        "placeholder": "Search for items",
+        "placeholder_short": "Search...",
+        "dropdown": {
+            "itemsFound":"Found",
+            "viewAll":"View All"
         }
     },
     "AuthButton": {

@@ -54,7 +54,16 @@ const SearchCommandInput = React.forwardRef<
 
 SearchCommandInput.displayName = CommandInput.displayName;
 
-export default function SearchButton() {
+export default function SearchButton({
+  labels,
+}: {
+  labels: {
+    placeholder: string;
+    placeholderShort: string;
+    viewAll: string;
+    itemsFound: string;
+  };
+}) {
   const router = useRouter();
   const [results, setResults] = useState<item_fts[]>([]);
   const [open, setOpen] = useState(false);
@@ -99,8 +108,10 @@ export default function SearchButton() {
       >
         <span className="inline-flex gap-2">
           <MagnifyingGlassIcon />
-          <span className="hidden lg:inline-block">Search for Items</span>
-          <span className="hidden md:inline-block lg:hidden">Search...</span>
+          <span className="hidden lg:inline-block">{labels.placeholder}</span>
+          <span className="hidden md:inline-block lg:hidden">
+            {labels.placeholderShort}
+          </span>
         </span>
         <kbd
           className="border-shadow bg-background pointer-events-none
@@ -115,7 +126,7 @@ export default function SearchButton() {
           <SearchCommandInput />
           <CommandList>
             <CommandEmpty>{`No results found for "${fullText}"`}.</CommandEmpty>
-            <CommandGroup heading="Items found:">
+            <CommandGroup heading={`${labels.itemsFound}: `}>
               {results.map((result) => (
                 <CommandItem
                   key={result.id}
@@ -127,18 +138,21 @@ export default function SearchButton() {
                     );
                   }}
                 >
-                  {result.name}
+                  <div className="inline-flex w-full justify-between">
+                    <div>{result.name} </div>
+                    <div className="text-gray-400">{result.title}</div>
+                  </div>
                 </CommandItem>
               ))}
               <CommandSeparator />
               <CommandItem
-                value="View All"
+                value={labels.viewAll}
                 onSelect={() => {
                   setOpen(false);
                   router.push(`/collection/search?fullText=${fullText}`);
                 }}
               >
-                View All
+                {labels.viewAll}
               </CommandItem>
             </CommandGroup>
           </CommandList>

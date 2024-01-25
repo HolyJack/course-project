@@ -18,6 +18,7 @@
             "form": {
                 "name": "Имя",
                 "tags": "Теги",
+                "selectTags": "Выбрать Теги",
                 "addTag": "Добавить Тег",
                 "submit": "Отправить",
                 "toast": { 
@@ -25,6 +26,17 @@
                     "failure": "Ошибка"
                 }
             }
+        }
+    },
+    "SearchPage" : {
+        "title": "Резульататы Поиска",
+        "placeholder": "Найти предметы коллекций",
+        "itemsFound": "Найдено предметов",
+        "grid": {
+            "name":"Имя",
+            "author":"Автор",
+            "collections":"Коллекция",
+            "createdAt":"Создано"
         }
     },
     "ItemPage": {
@@ -71,6 +83,15 @@
             "description":"Описание",
             "topic":"Тема",
             "createdAt":"Создано"
+        }
+    },
+
+    "SearchButton": {
+        "placeholder": "Поиск предметов коллекций",
+        "placeholder_short": "Поиск...",
+        "dropdown": {
+            "itemsFound":"Найдено",
+            "viewAll":"Посмотреть Все"
         }
     },
     "AuthButton": {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import { UseFormReturn, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,7 +33,6 @@ import {
   CommandInput,
   CommandItem,
   CommandGroup,
-  CommandEmpty,
 } from "@/components/ui/Command";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { cn } from "@/shared/utils";
@@ -56,11 +55,11 @@ const inputTypeMap: Record<CustomFieldTypes, string> = {
 };
 
 function TagsInput({
-  labels: { addTag },
+  labels: { tags: label, addTag, selectTags },
   form,
   defaultTags,
 }: {
-  labels: { addTag: string };
+  labels: { tags: string; addTag: string; selectTags: string };
   defaultTags: string[];
   form: UseFormReturn<z.infer<typeof itemFormSchema>>;
 }) {
@@ -96,7 +95,7 @@ function TagsInput({
   });
   return (
     <section className="space-y-2">
-      <Label>{"Tags"}</Label>
+      <Label>{label}</Label>
       <div className="flex flex-wrap gap-2">
         {tags.map((tag, id) => (
           <Badge
@@ -120,7 +119,7 @@ function TagsInput({
             role="combobox"
             aria-expanded={open}
           >
-            Select tags
+            {selectTags}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0">
@@ -173,6 +172,7 @@ export default function AddItemForm({
     tags: string;
     addTag: string;
     submit: string;
+    selectTags: string;
     toast: { success: string; failure: string };
   };
   defaultTags: string[];
@@ -231,7 +231,11 @@ export default function AddItemForm({
         <TagsInput
           form={form}
           defaultTags={defaultTags ?? []}
-          labels={{ addTag: labels.addTag }}
+          labels={{
+            tags: labels.tags,
+            addTag: labels.addTag,
+            selectTags: labels.selectTags,
+          }}
         />
         {cfValues.map((val, index) => (
           <FormField

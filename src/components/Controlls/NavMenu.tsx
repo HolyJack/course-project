@@ -49,7 +49,8 @@ async function AuthButton() {
   return <SignIn>{t("signin")}</SignIn>;
 }
 
-export function NavMenu() {
+export async function NavMenu() {
+  const t = await getTranslations("SearchButton");
   return (
     <div
       className="container mx-auto flex items-center justify-between
@@ -59,7 +60,14 @@ export function NavMenu() {
         <Logo />
       </Link>
       <div className="flex gap-4">
-        <SearchButton />
+        <SearchButton
+          labels={{
+            placeholderShort: t("placeholder_short"),
+            placeholder: t("placeholder"),
+            viewAll: t("dropdown.viewAll"),
+            itemsFound: t("dropdown.itemsFound"),
+          }}
+        />
         <AuthButton />
         <DarkModeButton />
         <LocaleButton />

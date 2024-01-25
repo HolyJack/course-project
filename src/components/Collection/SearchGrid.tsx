@@ -20,23 +20,37 @@ function CustomNameRender(props: CustomCellRendererProps<item_fts>) {
   );
 }
 
-export default function SearchGrid({ items }: { items: item_fts[] }) {
+export default function SearchGrid({
+  labels,
+  items,
+}: {
+  items: item_fts[];
+  labels: {
+    name: string;
+    author: string;
+    collection: string;
+    createdAt: string;
+  };
+}) {
   const [colDef] = useState<ColDef[]>([
     {
       field: "name",
+      headerName: labels.name,
       cellRenderer: CustomNameRender,
     },
     {
+      headerName: labels.author,
       field: "author",
       flex: 1,
     },
     {
       field: "title",
-      headerName: "Collection",
+      headerName: labels.collection,
       flex: 1,
     },
     {
       field: "createdAt",
+      headerName: labels.createdAt,
       width: 120,
     },
   ]);

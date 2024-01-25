@@ -21,10 +21,11 @@ export default async function AddItem({
     where: { collectionId },
   });
   const formLabels = {
-    name: t("form.addTag"),
+    name: t("form.name"),
     tags: t("form.tags"),
     addTag: t("form.addTag"),
     submit: t("form.submit"),
+    selectTags: t("form.selectTags"),
     toast: {
       success: t("form.toast.success"),
       failure: t("form.toast.failure"),
@@ -34,7 +35,7 @@ export default async function AddItem({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="text-2xl font-bold hover:text-primary">+</button>
+        <button className="hover:text-primary text-2xl font-bold">+</button>
       </DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-auto">
         <DialogTitle className="text-2xl font-bold">{t("title")}</DialogTitle>
