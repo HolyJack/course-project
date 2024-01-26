@@ -6,6 +6,9 @@ import { Separator } from "../ui/Separator";
 import CommentSection from "./CommentSection";
 import { getTranslations } from "next-intl/server";
 import prisma from "@/shared/db/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/shared/authOptions";
+import Likes from "./Like";
 
 export default async function Item({
   slug,
@@ -24,8 +27,7 @@ export default async function Item({
     },
     include: {
       collection: { select: { title: true } },
-      _count: { select: { likes: true } },
-      likes: { select: { user: { select: { slug: true } } } },
+      likes: { select: { userEmail: true } },
       tags: { include: { tag: { select: { name: true, slug: true } } } },
       customFieldValues: {
         include: {
@@ -35,18 +37,23 @@ export default async function Item({
     },
   });
   if (!item) return redirect("/");
+  const likes = item.likes
+    .filter((like) => like.userEmail)
+    .map((like) => like.userEmail) as string[];
+  const user = (await getServerSession(authOptions))?.user;
 
   return (
-    <section className="space-y-6">
-      <div className="relative flex items-center justify-center">
-        <NavigateBack className="absolute left-0 hover:text-primary">
+    <section className="space-y-6" suppressHydrationWarning>
+      <div className="relative flex items-center justify-between">
+        <NavigateBack className="hover:text-primary">
           <ChevronLeft />
         </NavigateBack>
         <h1 className="text-center text-4xl font-bold">{item?.name}</h1>
-        <div>
-          {item._count.likes}
-          <HeartIcon />
-        </div>
+        <Likes
+          defLikes={likes}
+          itemId={item.id}
+          userEmail={user?.email ?? undefined}
+        />
       </div>
       <div className="space-y-2">
         <p>

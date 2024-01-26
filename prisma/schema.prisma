@@ -154,13 +154,13 @@ model Topic {
 }
 
 model Like {
-  userId String
+  userEmail String
   itemId Int
   like   Boolean @default(false)
   item   Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User    @relation(fields: [userEmail], references: [email], onDelete: Cascade)
 
-  @@id([userId, itemId])
+  @@id([userEmail, itemId])
 }
 
 /// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
