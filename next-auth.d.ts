@@ -5,9 +5,11 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       role: Role;
+      active: boolean;
     };
   }
   interface User extends DefaultUser {
     role: Role;
+    active?: boolean;
   }
 }

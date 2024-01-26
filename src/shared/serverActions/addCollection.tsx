@@ -9,13 +9,14 @@ import { collectionSchema } from "./schemas";
 
 export async function addCollection(values: z.infer<typeof collectionSchema>) {
   collectionSchema.parse(values);
+  const session = await getServerSession(authOptions);
+  if (!session?.user || !session?.user.active) throw new Error("No valid User");
   const topicId = (
     await prisma.topic.findFirst({
       where: { name: values.topic },
       select: { id: true },
     })
   )?.id;
-  const session = await getServerSession(authOptions);
   const authorId = (
     await prisma.user.findFirst({
       where: { email: session?.user?.email },

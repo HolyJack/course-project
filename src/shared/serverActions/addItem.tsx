@@ -21,7 +21,7 @@ export default async function addItemAction(
 ) {
   // checking if user is authentificated
   const user = (await getServerSession(authOptions))?.user;
-  if (!user || !user.email) return false;
+  if (!user || !user.email || !user.active) return false;
 
   // creating additional tags
   const tags = data.tags.map(({ value }) => value);
@@ -33,7 +33,7 @@ export default async function addItemAction(
     where: { name: { in: tags } },
     select: { id: true },
   });
-
+  // finnaly adding an item + realated creating custom fields + linking all together
   const date = await prisma.item.create({
     data: {
       name: data.name,

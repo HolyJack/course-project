@@ -1,5 +1,5 @@
 import { Link, redirect } from "@/shared/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, HeartIcon } from "lucide-react";
 import Tag from "../ui/Tag";
 import NavigateBack from "../Controlls/NavigateBack";
 import { Separator } from "../ui/Separator";
@@ -24,6 +24,8 @@ export default async function Item({
     },
     include: {
       collection: { select: { title: true } },
+      _count: { select: { likes: true } },
+      likes: { select: { user: { select: { slug: true } } } },
       tags: { include: { tag: { select: { name: true, slug: true } } } },
       customFieldValues: {
         include: {
@@ -41,6 +43,10 @@ export default async function Item({
           <ChevronLeft />
         </NavigateBack>
         <h1 className="text-center text-4xl font-bold">{item?.name}</h1>
+        <div>
+          {item._count.likes}
+          <HeartIcon />
+        </div>
       </div>
       <div className="space-y-2">
         <p>

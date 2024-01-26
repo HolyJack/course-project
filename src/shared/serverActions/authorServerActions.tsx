@@ -11,7 +11,8 @@ export async function DeleteCollection({
 }) {
   try {
     const user = (await getServerSession(authOptions))?.user;
-    if (!user || !user.email || !user.role) throw new Error("no valid user");
+    if (!user || !user.email || !user.role || !user.active)
+      throw new Error("no valid user");
     const res = await prisma.collection.delete({
       where: { id: collectionId, author: { email: user.email } },
     });
@@ -27,7 +28,8 @@ export async function DeleteCollections({
   collectionsIds: number[];
 }) {
   const user = (await getServerSession(authOptions))?.user;
-  if (!user || !user.email) throw new Error("no valid user");
+  if (!user || !user.email || !user.role || !user.active)
+    throw new Error("no valid user");
   const res = await prisma.collection.deleteMany({
     where: { id: { in: collectionsIds }, author: { email: user.email } },
   });
@@ -37,7 +39,8 @@ export async function DeleteCollections({
 export async function DeleteItem({ itemId }: { itemId: number }) {
   try {
     const user = (await getServerSession(authOptions))?.user;
-    if (!user || !user.email) throw new Error("no valid user");
+    if (!user || !user.email || !user.role || !user.active)
+      throw new Error("no valid user");
     const res = await prisma.item.delete({
       where: { id: itemId, collection: { author: { email: user.email } } },
     });
@@ -50,7 +53,8 @@ export async function DeleteItem({ itemId }: { itemId: number }) {
 export async function DeleteItems({ itemsIds }: { itemsIds: number[] }) {
   try {
     const user = (await getServerSession(authOptions))?.user;
-    if (!user || !user.email) throw new Error("no valid user");
+    if (!user || !user.email || !user.role || !user.active)
+      throw new Error("no valid user");
     const res = await prisma.item.deleteMany({
       where: {
         id: { in: itemsIds },

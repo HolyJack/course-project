@@ -11,8 +11,7 @@ export default async function addComment({
   text: string;
 }) {
   const user = (await getServerSession(authOptions))?.user;
-  if (!user) throw new Error("No Active Session");
-  if (!user.email) throw new Error("User Has no unique indetifier");
+  if (!user || !user.email || !user.active) throw new Error("No valid user");
   const authorId = (
     await prisma.user.findUnique({
       where: { email: user.email },

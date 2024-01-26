@@ -3,8 +3,9 @@ import { AuthOptions } from "next-auth";
 import Github from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import slugify from "slugify";
-import { Role } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import prisma from "../db/db";
+import { signOut } from "next-auth/react";
 
 export const authOptions: AuthOptions = {
   //@ts-ignore
@@ -44,9 +45,21 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user, ...props }) {
       session.user.role = user.role;
+      session.user.active = user.active ?? false;
+
+      if ((user as User).active === false) {
+        await prisma.session.deleteMany({
+          where: { user: { id: user.id } },
+        });
+      }
+
       return session;
+    },
+    async signIn({ user }) {
+      if (!(user as User).active) return false;
+      return true;
     },
   },
 };
