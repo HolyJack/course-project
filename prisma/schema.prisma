@@ -172,7 +172,7 @@ model Comment {
   text      String
   updatedAt DateTime                 @updatedAt
   fts       Unsupported("tsvector")? @default(dbgenerated("to_tsvector('english'::regconfig, text)"))
-  author    User?                     @relation(fields: [authorId], references: [id])
+  author    User?                     @relation(fields: [authorId], references: [id], onDelete:  Cascade)
   item      Item                     @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
 

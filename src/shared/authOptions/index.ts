@@ -26,6 +26,7 @@ export const authOptions: AuthOptions = {
           email: profile.email,
           image: profile.avatar_url,
           role: profile.role ?? Role.AUTHOR,
+          active: true,
         };
       },
     }),
@@ -40,6 +41,7 @@ export const authOptions: AuthOptions = {
           image: profile.picture,
           slug: slugify(profile.name),
           role: profile.role ?? Role.AUTHOR,
+          active: true,
         };
       },
     }),
@@ -47,6 +49,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async session({ session, user, ...props }) {
       session.user.role = user.role;
+      console.log(user);
       session.user.active = user.active ?? false;
 
       if ((user as User).active === false) {
