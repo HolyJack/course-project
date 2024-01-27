@@ -3,10 +3,8 @@ import { Badge } from "./Badge";
 
 export default function Tag({ name }: { name: string }) {
   return (
-    <Badge className="text-base">
-      <Link className="w-full" href={`/collection/search?fullText=${name}`}>
-        {name}
-      </Link>
-    </Badge>
+    <Link href={`/collection/search?fullText=${name}`}>
+      <Badge className="text-base">{name}</Badge>
+    </Link>
   );
 }

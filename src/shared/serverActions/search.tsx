@@ -8,7 +8,6 @@ export default async function search({
   searchString,
   take,
 }: z.infer<typeof searchSchema>) {
-  console.log(searchString);
   try {
     const proccessedSearch = searchString
       ? searchString
@@ -32,8 +31,7 @@ export default async function search({
     }
       ${take ? Prisma.sql`LIMIT ${take}` : Prisma.empty}`;
     return items;
-  } catch (err) {
-    console.log(err);
+  } catch {
     throw new Error("Something went wrong");
   }
 }

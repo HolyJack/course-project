@@ -5,7 +5,6 @@ import GoogleProvider from "next-auth/providers/google";
 import slugify from "slugify";
 import { Role, User } from "@prisma/client";
 import prisma from "../db/db";
-import { signOut } from "next-auth/react";
 
 export const authOptions: AuthOptions = {
   //@ts-ignore
@@ -49,7 +48,6 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async session({ session, user, ...props }) {
       session.user.role = user.role;
-      console.log(user);
       session.user.active = user.active ?? false;
 
       if ((user as User).active === false) {
